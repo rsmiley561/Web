@@ -92,7 +92,9 @@ for (const ref of statics) {
 }
 
 /* ------------------------------- assemble -------------------------------- */
-const title = (html.match(/<title>([\s\S]*?)<\/title>/) || [, 'Chef Smiley'])[1];
+// The two previews sit side by side in a gallery, so each carries its
+// direction name rather than the shared production title.
+const title = dir === 'a' ? 'Chef Smiley — Ember' : 'Chef Smiley — Meridian';
 const body = html.slice(html.indexOf('<body>') + 6, html.lastIndexOf('</body>'))
   // Drop the external <script src> tags; the bundle replaces them.
   .replace(/\n?\s*<script src="[^"]*"><\/script>/g, '');
