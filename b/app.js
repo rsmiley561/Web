@@ -2,7 +2,7 @@
    ../assets/app-core.js; content lives in ../assets/site-data.js. */
 (function () {
   'use strict';
-  const { $, esc, reveals, observeNew, header, mobnav, lightbox, form,
+  const { $, esc, asset, reveals, observeNew, header, mobnav, lightbox, form,
           heroVideo, videoReel } = window.Core;
   const S = window.SITE;
   const G = window.GALLERY;
@@ -66,8 +66,8 @@
       (g, i) => `
     <button class="tile reveal" data-d="${(i % 4) * 60}" data-cat="${g.cat}" data-i="${i}" aria-label="${esc(g.title)} — open larger">
       <img loading="lazy" decoding="async" width="1000" height="1500"
-           src="${IMG}${g.id}-p.webp"
-           srcset="${IMG}${g.id}-ps.webp 500w, ${IMG}${g.id}-p.webp 1000w"
+           src="${asset(IMG + g.id + '-p.webp')}"
+           srcset="${asset(IMG + g.id + '-ps.webp')} 500w, ${asset(IMG + g.id + '-p.webp')} 1000w"
            sizes="(max-width: 640px) 50vw, (max-width: 1100px) 33vw, 23vw"
            alt="${esc(g.title)} — ${esc(g.note)}">
       <span class="tile__cap"><strong>${esc(g.title)}</strong><span>${esc(g.note)}</span></span>
@@ -100,7 +100,7 @@
   $('#svcs').innerHTML = S.SERVICES.map(
     (s, i) => `
     <article class="svc reveal" data-d="${i * 100}">
-      <div class="svc__img"><img loading="lazy" width="800" height="800" src="${IMG}${s.image}-sq.webp" alt="${esc(s.name)}"></div>
+      <div class="svc__img"><img loading="lazy" width="800" height="800" src="${asset(IMG + s.image + '-sq.webp')}" alt="${esc(s.name)}"></div>
       <h3>${esc(s.name)}</h3>
       <p class="svc__price">from ${money(s.priceFrom)} ${esc(s.unit)} <span>· ${esc(s.min)}</span></p>
       <p>${esc(s.body)}</p>

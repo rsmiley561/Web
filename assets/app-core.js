@@ -9,6 +9,11 @@
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = (sel, ctx) => (ctx || document).querySelector(sel);
   const $$ = (sel, ctx) => Array.from((ctx || document).querySelectorAll(sel));
+  // Resolves an asset path. Normally a no-op; a self-contained preview build
+  // (tools/inline.mjs) pre-populates window.__ASSETS with data URIs so the
+  // same rendering code works with no external files at all.
+  const asset = (p) => (root.__ASSETS && root.__ASSETS[p]) || p;
+
   const esc = (s) =>
     String(s).replace(/[&<>"']/g, (c) =>
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
@@ -104,7 +109,7 @@
     const show = () => {
       const it = list[i];
       if (!it) return;
-      img.src = `../assets/img/${it.id}-p.webp`;
+      img.src = asset(`../assets/img/${it.id}-p.webp`);
       img.alt = `${it.title} — ${it.note}`;
       title.textContent = it.title;
       note.textContent = it.note;
@@ -281,7 +286,7 @@
     paint();
   }
 
-  root.Core = { $, $$, esc, reveals, observeNew, revealAll, header, mobnav, magnetic, lightbox, form, reduced };
+  root.Core = { $, $$, esc, asset, reveals, observeNew, revealAll, header, mobnav, magnetic, lightbox, form, reduced };
 })(window);
 
 /* ---------------------------------------------------------------------------
@@ -323,8 +328,8 @@
         (it) => `
         <figure class="reel__item">
           <video muted loop playsinline preload="none"
-                 poster="../assets/video/${it.slug}-poster.jpg"
-                 data-src="../assets/video/${it.slug}-720.mp4" aria-label="${C.esc(it.title)}"></video>
+                 poster="${C.asset(`../assets/video/${it.slug}-poster.jpg`)}"
+                 data-src="${C.asset(`../assets/video/${it.slug}-720.mp4`)}" aria-label="${C.esc(it.title)}"></video>
           <figcaption><strong>${C.esc(it.title)}</strong><span>${C.esc(it.note)}</span></figcaption>
         </figure>`
       )

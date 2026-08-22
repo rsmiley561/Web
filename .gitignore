@@ -1,3 +1,4 @@
 node_modules/
 .shots/
 diag.mjs
+dist/

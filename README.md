@@ -10,7 +10,7 @@ pick one, then run the "Going live" steps below to promote it.
 | | |
 |---|---|
 | **`/a`** | **Ember** — near-black, cinematic, warm ember + gold, Fraunces display |
-| **`/b`** | **Meridian** — bone white, editorial grid, terracotta, Cormorant Garamond |
+| **`/b`** | **Meridian** — cool bone, editorial grid, deep Atlantic green, Cormorant Garamond |
 
 Both render the *same* copy, pricing, gallery and enquiry form from
 `assets/site-data.js`, so the only difference between them is design.
