@@ -10,23 +10,23 @@ function bakeNoise(N = 64) {
   const data = new Uint8Array(N * N * N * 4);
   const hash = (x, y, z, s) => { let h = (x * 374761393 + y * 668265263 + z * 2147483647 + s * 1103515245) >>> 0; h = ((h ^ (h >>> 13)) * 1274126177) >>> 0; return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };
   const sm = t => t * t * (3 - 2 * t);
-  const value = (x, y, z, P, s) => {                      // periodic value noise, lattice period P
-    const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z), xf = sm(x - xi), yf = sm(y - yi), zf = sm(z - zi);
-    const H = (a, b, c) => hash(((xi + a) % P + P) % P, ((yi + b) % P + P) % P, ((zi + c) % P + P) % P, s);
-    const l = (a, b, t) => a + (b - a) * t;
-    return l(l(l(H(0,0,0), H(1,0,0), xf), l(H(0,1,0), H(1,1,0), xf), yf), l(l(H(0,0,1), H(1,0,1), xf), l(H(0,1,1), H(1,1,1), xf), yf), zf);
-  };
-  const fbm = (u, v, w, s, base) => { let a = 0.5, f = base, sum = 0, norm = 0; for (let o = 0; o < 4; o++) { sum += a * value(u * f, v * f, w * f, f, s + o * 7); norm += a; a *= 0.5; f *= 2; } return sum / norm; };
-  const C = 4, feat = [];                                   // periodic Worley feature points, C cells per axis
-  for (let z = 0; z < C; z++) for (let y = 0; y < C; y++) for (let x = 0; x < C; x++) feat.push([x + hash(x, y, z, 91), y + hash(x, y, z, 92), z + hash(x, y, z, 93)]);
-  const worley = (u, v, w) => { const px = u * C, py = v * C, pz = w * C; let best = 9; const cx = Math.floor(px), cy = Math.floor(py), cz = Math.floor(pz);
+  const value = (x, y, z, P, s) => { const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z), xf = sm(x - xi), yf = sm(y - yi), zf = sm(z - zi);
+    const H = (a, b, c) => hash(((xi + a) % P + P) % P, ((yi + b) % P + P) % P, ((zi + c) % P + P) % P, s); const l = (a, b, t) => a + (b - a) * t;
+    return l(l(l(H(0,0,0), H(1,0,0), xf), l(H(0,1,0), H(1,1,0), xf), yf), l(l(H(0,0,1), H(1,0,1), xf), l(H(0,1,1), H(1,1,1), xf), yf), zf); };
+  const fbm = (u, v, w, s, base, oct) => { let a = 0.5, f = base, sum = 0, norm = 0; for (let o = 0; o < oct; o++) { sum += a * value(u * f, v * f, w * f, f, s + o * 7); norm += a; a *= 0.5; f *= 2; } return sum / norm; };
+  const featFor = (C, seed) => { const f = []; for (let z = 0; z < C; z++) for (let y = 0; y < C; y++) for (let x = 0; x < C; x++) f.push([x + hash(x, y, z, seed), y + hash(x, y, z, seed + 1), z + hash(x, y, z, seed + 2)]); return f; };
+  const worley = (u, v, w, C, feat) => { const px = u * C, py = v * C, pz = w * C; let best = 9; const cx = Math.floor(px), cy = Math.floor(py), cz = Math.floor(pz);
     for (let dz = -1; dz <= 1; dz++) for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const fx = ((cx + dx) % C + C) % C, fy = ((cy + dy) % C + C) % C, fz = ((cz + dz) % C + C) % C; const f = feat[(fz * C + fy) * C + fx];
-      const ox = f[0] + (cx + dx - fx), oy = f[1] + (cy + dy - fy), oz = f[2] + (cz + dz - fz); const d = Math.hypot(px - ox, py - oy, pz - oz); if (d < best) best = d; }
-    return 1 - Math.min(1, best * 1.15); };                  // inverted: 1 at feature points → cavities
+      const d = Math.hypot(px - (f[0] + (cx + dx - fx)), py - (f[1] + (cy + dy - fy)), pz - (f[2] + (cz + dz - fz))); if (d < best) best = d; } return best; };
+  const F3 = featFor(3, 91), F6 = featFor(6, 131), F12 = featFor(12, 171), F24 = featFor(24, 211);
   let i = 0;
   for (let z = 0; z < N; z++) for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
     const u = x / N, v = y / N, w = z / N;
-    data[i++] = fbm(u, v, w, 1, 4) * 255; data[i++] = worley(u, v, w) * 255; data[i++] = fbm(u, v, w, 31, 8) * 255; data[i++] = 255;
+    const base = fbm(u, v, w, 1, 3, 5);                                   // R: billowing mass
+    const chamber = 1 - Math.min(1, worley(u, v, w, 3, F3) * 1.05);          // G: big cavities (1 at chamber centres)
+    const wf = (1 - Math.min(1, worley(u, v, w, 6, F6))) * 0.625 + (1 - Math.min(1, worley(u, v, w, 12, F12))) * 0.25 + (1 - Math.min(1, worley(u, v, w, 24, F24))) * 0.125;  // B: worley-fbm, cauliflower
+    const high = fbm(u, v, w, 41, 12, 3);                                    // A: fine grain
+    data[i++] = base * 255; data[i++] = chamber * 255; data[i++] = wf * 255; data[i++] = high * 255;
   }
   const tex = new THREE.Data3DTexture(data, N, N, N); tex.format = THREE.RGBAFormat; tex.type = THREE.UnsignedByteType;
   tex.wrapS = tex.wrapT = tex.wrapR = THREE.RepeatWrapping; tex.minFilter = tex.magFilter = THREE.LinearFilter; tex.generateMipmaps = false; tex.needsUpdate = true;
@@ -41,7 +41,7 @@ in vec2 vUv; out vec4 outColor;
 uniform sampler3D uNoise; uniform float uTime;
 uniform vec3 uCamPos, uCamFwd, uCamRight, uCamUp; uniform float uTanHalfFov, uAspect;
 uniform vec3 uLightPos, uLightColor, uAmbient, uBg, uAlbedo;
-uniform float uScale, uDensity, uCarve, uThreshold, uDetail, uAbsorb, uLightI, uFalloff, uG1, uG2, uGmix, uDrift, uPocket, uTangle, uFar;
+uniform float uWarp; uniform float uScale, uDensity, uCarve, uThreshold, uDetail, uAbsorb, uLightI, uFalloff, uG1, uG2, uGmix, uDrift, uPocket, uTangle, uFar;
 uniform int uSteps;
 
 float hg(float c, float g){ float g2 = g*g; return (1.0 - g2) / (4.0*3.14159265 * pow(1.0 + g2 - 2.0*g*c, 1.5)); }
@@ -50,19 +50,26 @@ float sdCapsule(vec3 p, vec3 a, vec3 b, float r){ vec3 pa = p - a, ba = b - a; f
 
 // The cloud. fBm mass with cavities carved where inverted Worley is high; a spherical pocket
 // carved around the light so there is somewhere to arrive.
+float remap(float v, float lo, float hi, float a, float b){ return a + (v - lo) / max(hi - lo, 1e-4) * (b - a); }
 float cloud(vec3 p){
-  vec3 q = p * uScale + vec3(0.013, 0.007, 0.011) * uTime * uDrift;
-  // low-frequency domain warp breaks the tile repetition into organic folds
-  vec3 warp = (texture(uNoise, q * 0.31 + vec3(0.71, 0.13, 0.42)).rgb - 0.5) * 0.28;
-  vec4 n = texture(uNoise, q + warp);
-  float F = clamp((n.r - 0.5) * 3.0 + 0.5, 0.0, 1.0);                 // fBm with real dynamic range
-  float W = 1.0 - clamp((1.0 - n.g / 1.15 - 0.05) / 0.8, 0.0, 1.0);    // cavity: 1 at Worley feature points
-  float shape = F - uCarve * W - uThreshold;
-  float detail = texture(uNoise, q * 2.7 + vec3(0.31, 0.17, 0.53)).b;
-  shape += (detail - 0.5) * uDetail;
+  vec3 q = p * uScale + vec3(0.011, 0.006, 0.009) * uTime * uDrift;
+  // nested domain warp: folds and stretched, fibrous strands instead of round lumps
+  vec3 w1 = texture(uNoise, q * 0.45 + vec3(0.71, 0.13, 0.42)).rga - 0.5;
+  vec3 w2 = texture(uNoise, q * 1.1 + w1 * 0.7 + vec3(0.23, 0.61, 0.08)).arg - 0.5;
+  vec3 qq = q + (w1 * 0.6 + w2 * 0.35) * uWarp;
+  vec4 n = texture(uNoise, qq);
+  float base = clamp((n.r - 0.5) * 2.6 + 0.5, 0.0, 1.0);
+  base = remap(base, n.b * 0.55 - 0.55, 1.0, 0.0, 1.0);               // worley-fbm carves the billows
+  float cav = smoothstep(0.15, 0.95, n.g);                             // chambers
+  float shape = base - uCarve * cav - uThreshold;
   float dl = length(p - uLightPos);
-  shape -= uPocket * exp(-dl*dl / 2000.0);                             // the pocket you arrive in
-  return smoothstep(0.02, 0.24, shape) * uDensity;                     // cavities empty, walls dense
+  shape -= uPocket * exp(-dl*dl / 2000.0);
+  // erode the edges with fine cellular detail: cauliflower at the boundary, solid inside
+  vec4 dn = texture(uNoise, qq * 4.3 + vec3(0.31, 0.17, 0.53));
+  float det = dn.b * 0.7 + dn.a * 0.3;
+  float edge = 1.0 - smoothstep(0.0, 0.30, shape);
+  shape -= det * edge * uDetail;
+  return smoothstep(0.0, 0.16, shape) * uDensity;
 }
 // One dark, fibrous tangle just in front of the light: absorbing only, never emitting.
 float tangle(vec3 p){
@@ -94,14 +101,15 @@ void main(){
     float dc = cloud(p), dk = tangle(p), d = dc + dk;
     if (d > 0.002) {
       vec3 L = uLightPos - p; float dl = length(L); L /= dl;
-      float sh = 0.0; float ls = 3.0;
-      for (int j = 0; j < 4; j++) { vec3 lp = p + L * ls * (float(j) + 0.6); sh += cloud(lp) + tangle(lp); ls *= 1.35; }
-      float lightT = exp(-sh * 2.4 * uAbsorb);
-      float powder = 1.0 - exp(-dc * 3.0);
+      float sh = 0.0; float ls = 2.2; float lt = 0.0;
+      for (int j = 0; j < 6; j++) { lt += ls; vec3 lp = p + L * lt; sh += (cloud(lp) + tangle(lp)) * ls; ls *= 1.3; }
+      float lightT = exp(-sh * uAbsorb * 1.1);
+      float powder = 1.0 - exp(-dc * 4.0);
+      float occl = mix(1.0, exp(-dc * 1.2), 0.55);
       float c = dot(rd, L);
       float phase = mix(hg(c, uG1), hg(c, uG2), uGmix);
       float atten = uLightI / (1.0 + dl * dl * uFalloff);
-      vec3 S = (uLightColor * atten * lightT * phase * (0.6 + 0.4*powder) * uAlbedo + uAmbient) * dc;   // only the cloud scatters, in viridian
+      vec3 S = (uLightColor * atten * lightT * phase * (0.55 + 0.45*powder) * uAlbedo + uAmbient * occl) * dc;   // only the cloud scatters, in viridian
       float sigma = d * uAbsorb;
       float stepT = exp(-sigma * dt);
       col += T * (S - S * stepT) / max(sigma, 1e-4);
@@ -127,8 +135,8 @@ void main(){
 
 // ---------- tunables (persisted in the URL hash so the owner can send back what looked right) ----
 const P = {
-  density: 1.0, carve: 1.2, threshold: 0.15, detail: 0.3, absorb: 0.8, scale: 0.0065, drift: 0.5,
-  lightI: 9, falloff: 0.0022, g1: 0.62, g2: -0.28, gmix: 0.45, pocket: 1.8, tangle: 6.0, far: 280, steps: 60, exposure: 1.0,
+  density: 1.0, carve: 1.1, threshold: 0.12, detail: 0.55, warp: 1.0, absorb: 0.8, scale: 0.0075, drift: 0.5,
+  lightI: 10, falloff: 0.0022, g1: 0.62, g2: -0.28, gmix: 0.45, pocket: 1.8, tangle: 6.0, far: 280, steps: 72, exposure: 1.0,
   scale2: 0.5,          // render scale (fraction of framebuffer)
 };
 const hashParams = new URLSearchParams(location.hash.slice(1)); for (const k of Object.keys(P)) if (hashParams.has(k)) P[k] = Number(hashParams.get(k));
@@ -148,7 +156,7 @@ const march = new THREE.ShaderMaterial({glslVersion: THREE.GLSL3, vertexShader: 
   uNoise: {value: noise}, uTime: {value: 0}, uCamPos: {value: new THREE.Vector3()}, uCamFwd: {value: new THREE.Vector3()}, uCamRight: {value: new THREE.Vector3()}, uCamUp: {value: new THREE.Vector3()},
   uTanHalfFov: {value: Math.tan(THREE.MathUtils.degToRad(cam.fov / 2))}, uAspect: {value: 1},
   uLightPos: {value: new THREE.Vector3(0, 4, -52)}, uLightColor: {value: new THREE.Color(1.0, 0.93, 0.78)}, uAmbient: {value: new THREE.Color(0.010, 0.026, 0.020)}, uBg: {value: new THREE.Color(0.004, 0.012, 0.010)}, uAlbedo: {value: new THREE.Color(0.40, 0.80, 0.62)},
-  uScale: {value: P.scale}, uDensity: {value: P.density}, uCarve: {value: P.carve}, uThreshold: {value: P.threshold}, uDetail: {value: P.detail}, uAbsorb: {value: P.absorb}, uLightI: {value: P.lightI}, uFalloff: {value: P.falloff},
+  uWarp: {value: P.warp}, uScale: {value: P.scale}, uDensity: {value: P.density}, uCarve: {value: P.carve}, uThreshold: {value: P.threshold}, uDetail: {value: P.detail}, uAbsorb: {value: P.absorb}, uLightI: {value: P.lightI}, uFalloff: {value: P.falloff},
   uG1: {value: P.g1}, uG2: {value: P.g2}, uGmix: {value: P.gmix}, uDrift: {value: P.drift}, uPocket: {value: P.pocket}, uTangle: {value: P.tangle}, uFar: {value: P.far}, uSteps: {value: P.steps},
 }});
 const composite = new THREE.ShaderMaterial({glslVersion: THREE.GLSL3, vertexShader: VERT, fragmentShader: COMPOSITE, depthTest: false, depthWrite: false, uniforms: {uTex: {value: null}, uExposure: {value: P.exposure}}});
@@ -173,8 +181,8 @@ addEventListener('pointerup', () => drag = null);
 el.addEventListener('wheel', e => { e.preventDefault(); fly.vel.addScaledVector(forward(), -e.deltaY * 0.02); touched(); }, {passive: false});
 el.addEventListener('touchstart', e => { touched(); if (e.touches.length === 1) drag = {x: e.touches[0].clientX, y: e.touches[0].clientY}; else if (e.touches.length === 2) { drag = null; pinch = dist(e.touches); } }, {passive: true});
 el.addEventListener('touchmove', e => { e.preventDefault(); touched();
-  if (e.touches.length === 1 && drag) { const t = e.touches[0]; fly.vyaw -= (t.clientX - drag.x) * 0.0028; fly.vpitch -= (t.clientY - drag.y) * 0.0028; drag = {x: t.clientX, y: t.clientY}; }
-  else if (e.touches.length === 2 && pinch != null) { const d = dist(e.touches); fly.vel.addScaledVector(forward(), (d - pinch) * 0.06); pinch = d; } }, {passive: false});
+  if (e.touches.length === 1 && drag) { const t = e.touches[0]; fly.vyaw -= (t.clientX - drag.x) * 0.0011; fly.vpitch -= (t.clientY - drag.y) * 0.0011; drag = {x: t.clientX, y: t.clientY}; }
+  else if (e.touches.length === 2 && pinch != null) { const d = dist(e.touches); fly.vel.addScaledVector(forward(), (d - pinch) * 0.022); pinch = d; } }, {passive: false});
 el.addEventListener('touchend', e => { if (e.touches.length < 2) pinch = null; if (!e.touches.length) drag = null; });
 const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
 const keys = new Set(); addEventListener('keydown', e => { keys.add(e.key.toLowerCase()); touched(); }); addEventListener('keyup', e => keys.delete(e.key.toLowerCase()));
@@ -193,7 +201,7 @@ function stepFly(dt) {
     fly.vyaw += (wrapAngle(wantYaw - fly.yaw)) * 0.25 * dt; fly.vpitch += (wantPitch - fly.pitch) * 0.25 * dt;
   }
   fly.yaw += fly.vyaw; fly.pitch = THREE.MathUtils.clamp(fly.pitch + fly.vpitch, -1.3, 1.3); fly.vyaw *= Math.pow(0.05, dt); fly.vpitch *= Math.pow(0.05, dt);
-  fly.pos.addScaledVector(fly.vel, dt); fly.vel.multiplyScalar(Math.pow(0.12, dt));
+  if (fly.vel.length() > 40) fly.vel.setLength(40); fly.pos.addScaledVector(fly.vel, dt); fly.vel.multiplyScalar(Math.pow(0.10, dt));
 }
 const wrapAngle = a => Math.atan2(Math.sin(a), Math.cos(a));
 
@@ -214,9 +222,9 @@ function loop() {
 requestAnimationFrame(loop);
 
 // ---------- tuning panel ---------------------------------------------------------------------------
-const SLIDERS = [['density', 0.3, 3, 0.05], ['carve', 0, 2, 0.05], ['threshold', 0, 0.6, 0.01], ['detail', 0, 1, 0.05], ['absorb', 0.2, 2.5, 0.05], ['scale', 0.004, 0.03, 0.0005], ['drift', 0, 2, 0.1],
+const SLIDERS = [['density', 0.3, 3, 0.05], ['carve', 0, 2, 0.05], ['threshold', 0, 0.6, 0.01], ['detail', 0, 1.2, 0.05], ['warp', 0, 2.5, 0.05], ['absorb', 0.2, 2.5, 0.05], ['scale', 0.004, 0.03, 0.0005], ['drift', 0, 2, 0.1],
   ['lightI', 2, 80, 1], ['falloff', 0.0001, 0.004, 0.0001], ['g1', 0, 0.9, 0.02], ['g2', -0.9, 0, 0.02], ['gmix', 0, 1, 0.05], ['pocket', 0, 3, 0.05], ['tangle', 0, 14, 0.5], ['steps', 24, 96, 4], ['exposure', 0.4, 2.5, 0.05]];
-const U = {density: 'uDensity', carve: 'uCarve', threshold: 'uThreshold', detail: 'uDetail', absorb: 'uAbsorb', scale: 'uScale', drift: 'uDrift', lightI: 'uLightI', falloff: 'uFalloff', g1: 'uG1', g2: 'uG2', gmix: 'uGmix', pocket: 'uPocket', tangle: 'uTangle', steps: 'uSteps', far: 'uFar'};
+const U = {warp: 'uWarp', density: 'uDensity', carve: 'uCarve', threshold: 'uThreshold', detail: 'uDetail', absorb: 'uAbsorb', scale: 'uScale', drift: 'uDrift', lightI: 'uLightI', falloff: 'uFalloff', g1: 'uG1', g2: 'uG2', gmix: 'uGmix', pocket: 'uPocket', tangle: 'uTangle', steps: 'uSteps', far: 'uFar'};
 const panel = document.getElementById('tune');
 panel.innerHTML = SLIDERS.map(([k, a, b, s]) => `<label><span>${k}</span><input type="range" name="${k}" min="${a}" max="${b}" step="${s}" value="${P[k]}"><output>${P[k]}</output></label>`).join('') + `<button id="reset" type="button">Reset</button><button id="copy" type="button">Copy settings</button>`;
 panel.oninput = e => { const k = e.target.name; if (!k) return; P[k] = Number(e.target.value); e.target.nextElementSibling.textContent = P[k]; if (U[k]) march.uniforms[U[k]].value = k === 'steps' ? Math.round(P[k]) : P[k]; if (k === 'exposure') composite.uniforms.uExposure.value = P[k]; writeHash(); };
