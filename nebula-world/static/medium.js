@@ -40,7 +40,7 @@ precision highp float; precision highp sampler3D;
 in vec2 vUv; out vec4 outColor;
 uniform sampler3D uNoise; uniform float uTime;
 uniform vec3 uCamPos, uCamFwd, uCamRight, uCamUp; uniform float uTanHalfFov, uAspect;
-uniform vec3 uLightPos, uLightColor, uAmbient, uBg;
+uniform vec3 uLightPos, uLightColor, uAmbient, uBg, uAlbedo;
 uniform float uScale, uDensity, uCarve, uThreshold, uDetail, uAbsorb, uLightI, uFalloff, uG1, uG2, uGmix, uDrift, uPocket, uTangle, uFar;
 uniform int uSteps;
 
@@ -66,10 +66,10 @@ float cloud(vec3 p){
 }
 // One dark, fibrous tangle just in front of the light: absorbing only, never emitting.
 float tangle(vec3 p){
-  vec3 c = p - (uLightPos + vec3(0.0, -1.0, 12.0));
-  if (dot(c, c) > 900.0) return 0.0;
-  vec3 warp = (texture(uNoise, c * 0.03 + vec3(0.5)).rgb - 0.5) * 7.0;
-  vec3 q = c + warp;
+  vec3 c = p - (uLightPos + vec3(7.0, -3.0, 10.0));
+  if (dot(c, c) > 400.0) return 0.0;
+  vec3 warp = (texture(uNoise, c * 0.045 + vec3(0.5)).rgb - 0.5) * 4.5;
+  vec3 q = (c + warp) * 1.6;
   float d = 1e9;
   d = smin(d, sdCapsule(q, vec3(0.0), vec3( 14.0,  8.0,  3.0), 0.9), 2.2);
   d = smin(d, sdCapsule(q, vec3(0.0), vec3(-12.0, 10.0, -4.0), 0.8), 2.2);
@@ -86,10 +86,10 @@ void main(){
   vec3 rd = normalize(uCamFwd + uCamRight * ndc.x * uTanHalfFov * uAspect + uCamUp * ndc.y * uTanHalfFov);
   vec3 ro = uCamPos;
   float T = 1.0; vec3 col = vec3(0.0);
-  float t = 0.6 + 0.5 * fract(sin(dot(vUv, vec2(12.9898, 78.233))) * 43758.5453);   // jitter hides banding
+  float t = 0.4 + 0.3 * fract(sin(dot(vUv, vec2(12.9898, 78.233))) * 43758.5453);   // small jitter hides banding
   for (int i = 0; i < 96; i++) {
     if (i >= uSteps || t > uFar) break;
-    float dt = max(1.4, t * 0.06);
+    float dt = max(0.9, t * 0.05);
     vec3 p = ro + rd * t;
     float dc = cloud(p), dk = tangle(p), d = dc + dk;
     if (d > 0.002) {
@@ -101,7 +101,7 @@ void main(){
       float c = dot(rd, L);
       float phase = mix(hg(c, uG1), hg(c, uG2), uGmix);
       float atten = uLightI / (1.0 + dl * dl * uFalloff);
-      vec3 S = (uLightColor * atten * lightT * phase * (0.6 + 0.4*powder) + uAmbient) * dc;   // only the cloud scatters
+      vec3 S = (uLightColor * atten * lightT * phase * (0.6 + 0.4*powder) * uAlbedo + uAmbient) * dc;   // only the cloud scatters, in viridian
       float sigma = d * uAbsorb;
       float stepT = exp(-sigma * dt);
       col += T * (S - S * stepT) / max(sigma, 1e-4);
@@ -111,7 +111,7 @@ void main(){
     t += dt;
   }
   // what remains of the background and the light itself seen through the medium
-  vec3 toL = normalize(uLightPos - ro); float glow = pow(max(dot(rd, toL), 0.0), 240.0) * uLightI * 0.06;
+  vec3 toL = normalize(uLightPos - ro); float glow = pow(max(dot(rd, toL), 0.0), 240.0) * uLightI * 0.12;
   col += T * (uBg + uLightColor * glow);
   outColor = vec4(col, 1.0);
 }`;
@@ -127,8 +127,8 @@ void main(){
 
 // ---------- tunables (persisted in the URL hash so the owner can send back what looked right) ----
 const P = {
-  density: 1.0, carve: 1.2, threshold: 0.15, detail: 0.3, absorb: 0.75, scale: 0.0065, drift: 0.5,
-  lightI: 30, falloff: 0.0008, g1: 0.62, g2: -0.28, gmix: 0.45, pocket: 1.8, tangle: 6.0, far: 280, steps: 48, exposure: 1.15,
+  density: 1.0, carve: 1.2, threshold: 0.15, detail: 0.3, absorb: 0.8, scale: 0.0065, drift: 0.5,
+  lightI: 9, falloff: 0.0022, g1: 0.62, g2: -0.28, gmix: 0.45, pocket: 1.8, tangle: 6.0, far: 280, steps: 60, exposure: 1.0,
   scale2: 0.5,          // render scale (fraction of framebuffer)
 };
 const hashParams = new URLSearchParams(location.hash.slice(1)); for (const k of Object.keys(P)) if (hashParams.has(k)) P[k] = Number(hashParams.get(k));
@@ -147,7 +147,7 @@ const quad = new THREE.PlaneGeometry(2, 2), ortho = new THREE.OrthographicCamera
 const march = new THREE.ShaderMaterial({glslVersion: THREE.GLSL3, vertexShader: VERT, fragmentShader: MARCH, depthTest: false, depthWrite: false, uniforms: {
   uNoise: {value: noise}, uTime: {value: 0}, uCamPos: {value: new THREE.Vector3()}, uCamFwd: {value: new THREE.Vector3()}, uCamRight: {value: new THREE.Vector3()}, uCamUp: {value: new THREE.Vector3()},
   uTanHalfFov: {value: Math.tan(THREE.MathUtils.degToRad(cam.fov / 2))}, uAspect: {value: 1},
-  uLightPos: {value: new THREE.Vector3(0, 4, -52)}, uLightColor: {value: new THREE.Color(1.0, 0.93, 0.78)}, uAmbient: {value: new THREE.Color(0.012, 0.030, 0.024)}, uBg: {value: new THREE.Color(0.006, 0.018, 0.015)},
+  uLightPos: {value: new THREE.Vector3(0, 4, -52)}, uLightColor: {value: new THREE.Color(1.0, 0.93, 0.78)}, uAmbient: {value: new THREE.Color(0.010, 0.026, 0.020)}, uBg: {value: new THREE.Color(0.004, 0.012, 0.010)}, uAlbedo: {value: new THREE.Color(0.40, 0.80, 0.62)},
   uScale: {value: P.scale}, uDensity: {value: P.density}, uCarve: {value: P.carve}, uThreshold: {value: P.threshold}, uDetail: {value: P.detail}, uAbsorb: {value: P.absorb}, uLightI: {value: P.lightI}, uFalloff: {value: P.falloff},
   uG1: {value: P.g1}, uG2: {value: P.g2}, uGmix: {value: P.gmix}, uDrift: {value: P.drift}, uPocket: {value: P.pocket}, uTangle: {value: P.tangle}, uFar: {value: P.far}, uSteps: {value: P.steps},
 }});
@@ -164,7 +164,7 @@ function resize() {
 addEventListener('resize', resize); resize();
 
 // ---------- inertial fly camera ------------------------------------------------------------------
-const fly = {yaw: 0, pitch: 0, vyaw: 0, vpitch: 0, vel: new THREE.Vector3(), pos: new THREE.Vector3(0, 2, -4), lastInput: performance.now(), auto: true};
+const fly = {yaw: 0, pitch: 0, vyaw: 0, vpitch: 0, vel: new THREE.Vector3(), pos: new THREE.Vector3(0, 2, 14), lastInput: performance.now(), auto: true};
 const el = renderer.domElement; let drag = null, pinch = null;
 const touched = () => { fly.lastInput = performance.now(); };
 el.addEventListener('pointerdown', e => { if (e.pointerType === 'touch') return; drag = {x: e.clientX, y: e.clientY}; touched(); });
