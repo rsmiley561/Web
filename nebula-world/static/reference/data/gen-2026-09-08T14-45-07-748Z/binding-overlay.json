@@ -1,0 +1,195 @@
+{
+  "schema_version": "s1-binding-overlay-1",
+  "overlay_version": "v1",
+  "production_approved": false,
+  "replaces_source_values": false,
+  "changes_owner_defaults": false,
+  "applies_to": "WORK/engine/CANDIDATE/data/occurrence-bindings.json",
+  "base_bindings_version": "occurrence-bindings v1 as shipped in accepted v1.2",
+  "policy": "Every entry binds an EXISTING reviewed rule that already carries its own source evidence. No new numeric value is created here, no reviewed value is edited, and no owner default is set. The base file is never modified: this overlay is merged at load time by the S1 layer only, which is why the baseline replay scan stays byte-identical.",
+  "entries": [
+    {
+      "id": "OV-001",
+      "action": "CORRECT_INGREDIENT_ID",
+      "corrects_binding_id": "BIND-011",
+      "defect": "BIND-011 targets ingredient id \"cloves\", which does not exist in the accepted corpus. The corpus id is \"clove\" (39 direct rows), so an already-reviewed rule was unreachable for a purely lexical reason.",
+      "remedy_class": "BIND_EXISTING_RULE",
+      "binding": {
+        "id": "BIND-011-OV1",
+        "ingredient_ids": ["clove"],
+        "profiles": ["QE-FIFTY-1_3-138"],
+        "require_all": ["\\bground\\b"],
+        "exclude_any": ["\\bwhole\\b"],
+        "mode": "automatic_reference",
+        "request_basis": "AP",
+        "target_unit": "oz",
+        "target_basis": "AP",
+        "notes": "S1 overlay v1: identical predicates and profile to BIND-011, corrected to the corpus ingredient id.",
+        "title_predicate": null
+      },
+      "evidence": {
+        "profile_id": "QE-FIFTY-1_3-138",
+        "profile_label": "Cloves, ground",
+        "book": "Food for Fifty, 11th edition",
+        "physical_page": 41,
+        "printed_page": 24,
+        "table": "Table 1.3",
+        "original_cells": ["Cloves, ground", "1 oz", "4 Tbsp"],
+        "page_render": "WORK/engine/EVIDENCE/page-renders/FIFTY-p0041.png",
+        "full_source_context_check": "Table 1.3 labels comminution state explicitly and lists \"Cloves, ground\" and \"Cloves, whole\" as separate rows, so binding only the ground form preserves the distinction the source draws."
+      },
+      "positive_examples": [
+        { "raw": "½ teaspoon ground cloves", "expect": "rule applies" },
+        { "raw": "1 teaspoon freshly ground cloves", "expect": "rule applies" }
+      ],
+      "negative_examples": [
+        { "raw": "4 whole cloves", "expect": "rule must not apply" },
+        { "raw": "1 teaspoon whole cloves", "expect": "the ground rule must not apply" }
+      ]
+    },
+    {
+      "id": "OV-002",
+      "action": "ADD",
+      "remedy_class": "BIND_EXISTING_RULE",
+      "rationale": "The registry already holds a reviewed density for whole cloves from the same table, but no binding named it. Volume measures only: the source's count relation is NOT bound here.",
+      "binding": {
+        "id": "BIND-CLOVE-WHOLE-OV1",
+        "ingredient_ids": ["clove"],
+        "profiles": ["QE-FIFTY-1_3-139"],
+        "require_all": ["\\bwhole\\b", "\\b(?:teaspoons?|tablespoons?|tsp|tbsp|cups?)\\b"],
+        "exclude_any": ["\\bground\\b"],
+        "mode": "automatic_reference",
+        "request_basis": "AP",
+        "target_unit": "oz",
+        "target_basis": "AP",
+        "notes": "S1 overlay v1: whole-clove volume measures only.",
+        "title_predicate": null
+      },
+      "evidence": {
+        "profile_id": "QE-FIFTY-1_3-139",
+        "profile_label": "Cloves, whole",
+        "book": "Food for Fifty, 11th edition",
+        "physical_page": 41,
+        "printed_page": 24,
+        "table": "Table 1.3",
+        "original_cells": ["Cloves, whole", "1 oz", "5 Tbsp or 500 cloves"],
+        "page_render": "WORK/engine/EVIDENCE/page-renders/FIFTY-p0041.png",
+        "full_source_context_check": "The row states both a volume equivalence and a count equivalence. Only the volume equivalence exists as a reviewed rule in the registry, so only volume-measured occurrences are bound. The \"500 cloves\" count relation is recorded in COVERAGE-ROADMAP.json as a targeted extraction with this exact cell; it is not created here."
+      },
+      "positive_examples": [{ "raw": "1 teaspoon whole cloves", "expect": "rule applies" }],
+      "negative_examples": [
+        { "raw": "½ teaspoon ground cloves", "expect": "rule must not apply" },
+        { "raw": "4 whole cloves", "expect": "must stay a count gap; no count relation is bound" }
+      ]
+    },
+    {
+      "id": "OV-003",
+      "action": "ADD",
+      "remedy_class": "BIND_EXISTING_RULE",
+      "rationale": "The source states the packing condition (\"loosely packed\") that the recipe rows also state, so the predicate can require that exact stated condition rather than assuming it.",
+      "binding": {
+        "id": "BIND-BASIL-FRESH-LOOSE-OV1",
+        "ingredient_ids": ["basil"],
+        "profiles": ["QE-FIFTY-1_3-032"],
+        "require_all": ["\\bloosely packed\\b", "\\bleaves\\b"],
+        "exclude_any": ["\\bdried\\b", "\\b(?:chopped|minced|shredded|chiffonade)\\b"],
+        "mode": "automatic_reference",
+        "request_basis": "AP",
+        "target_unit": "oz",
+        "target_basis": "AP",
+        "notes": "S1 overlay v1: whole fresh basil leaves measured loosely packed. Chopped basil stays with the reviewed MATH chopped-leaf profile already bound.",
+        "title_predicate": null
+      },
+      "evidence": {
+        "profile_id": "QE-FIFTY-1_3-032",
+        "profile_label": "Basil leaves, fresh (loosely packed)",
+        "book": "Food for Fifty, 11th edition",
+        "physical_page": 39,
+        "printed_page": 22,
+        "table": "Table 1.3",
+        "original_cells": ["Basil leaves, fresh (loosely packed)", "1 oz", "3⁄4 cup, 40 medium leaves"],
+        "page_render": "WORK/engine/EVIDENCE/page-renders/FIFTY-p0039.png",
+        "full_source_context_check": "The same table separately lists \"Basil, sweet, dried\", so fresh and dried stay distinct. The excluded chopped forms are already covered by the reviewed MATH stemless-chopped profile, so the two do not compete for one occurrence."
+      },
+      "positive_examples": [{ "raw": "½ cup loosely packed basil leaves", "expect": "rule applies" }],
+      "negative_examples": [
+        { "raw": "1 tablespoon finely chopped basil", "expect": "this rule must not apply" },
+        { "raw": "2 teaspoons dried basil", "expect": "rule must not apply" }
+      ]
+    },
+    {
+      "id": "OV-004",
+      "action": "ADD",
+      "remedy_class": "OWNER_CONVENTION",
+      "rationale": "318 direct rows measure black or white pepper by volume without stating a comminution state. That is one shared owner question, not 318 missing source facts. This binding is deliberately `named_policy_required`: with no preset selected the rows report a reference-policy question instead of a missing relation, and nothing resolves numerically until an owner explicitly selects the named preset.",
+      "binding": {
+        "id": "BIND-PEPPER-UNSTATED-FORM-OV1",
+        "ingredient_ids": ["black-pepper", "white-pepper"],
+        "profiles": ["QE-FIFTY-1_3-331"],
+        "require_all": ["\\b(?:teaspoons?|tablespoons?|tsp|tbsp|cups?)\\b"],
+        "exclude_any": ["\\bground\\b", "\\b(?:whole|cracked|corns?|peppercorns?|grinds?)\\b"],
+        "mode": "named_policy_required",
+        "request_basis": "AP",
+        "target_unit": "oz",
+        "target_basis": "AP",
+        "notes": "S1 overlay v1: volume-measured pepper whose comminution state the source does not state. Resolves only under the named preset unstated-ground-pepper-volume-v1.",
+        "title_predicate": null
+      },
+      "evidence": {
+        "profile_id": "QE-FIFTY-1_3-331",
+        "profile_label": "the reviewed ground-pepper density already bound by BIND-001 for explicitly ground pepper",
+        "book": "Food for Fifty, 11th edition",
+        "table": "Table 1.3",
+        "full_source_context_check": "No new source value is used: this is the same reviewed rule BIND-001 already applies when the recipe does state \"ground\". What the preset supplies is the owner's reading of an unstated recipe form, which is why it is a convention and not an automatic reference.",
+        "excluded_counterexamples": "Any row stating whole, cracked, corns, peppercorns or grinds is excluded, and rows already stating \"ground\" are handled by BIND-001 without a preset."
+      },
+      "positive_examples": [
+        { "raw": "1 teaspoon black pepper", "expect": "reports REFERENCE_POLICY_OR_MEASURING_METHOD_REQUIRED without the preset; resolves with it" }
+      ],
+      "negative_examples": [
+        { "raw": "1 teaspoon cracked black pepper", "expect": "must not be captured by this convention" },
+        { "raw": "2 tablespoons whole black peppercorns", "expect": "must not be captured by this convention" }
+      ]
+    }
+  ],
+  "rejected_candidates": [
+    {
+      "candidate": "Bind \"dried oregano\" occurrences to QE-FIFTY-1_3-309 \"Oregano, leaf\"",
+      "rows_that_would_have_been_gained": 69,
+      "decision": "REJECTED",
+      "reason": "Food for Fifty Table 1.3 labels preservation state explicitly where it means it (\"Basil, sweet, dried\" vs \"Basil leaves, fresh (loosely packed)\", \"Parsley, coarsely chopped\" vs \"Parsley flakes, dry\"). The unlabelled \"Oregano, leaf\" row carries no dried claim, and its density (1 oz = 3/4 cup) matches the fresh-leaf entries rather than the dried ones (1 oz = 1 1/3 cups). Reading it as dried oregano would be an inference, not the source.",
+      "evidence": "WORK/engine/EVIDENCE/page-renders/FIFTY-p0045.txt and FIFTY-p0039.txt, read during this pass",
+      "remedy": "TARGETED_NUMERICAL_SOURCE_REVIEW"
+    },
+    {
+      "candidate": "Relax BIND-057/058/059 (parsley, rosemary, tarragon) so plain \"chopped parsley\" reaches the MATH stemless-chopped profiles",
+      "rows_that_would_have_been_gained": 173,
+      "decision": "REJECTED",
+      "reason": "Those reviewed profiles are specific to Italian/stemless leaves chopped. Dropping the qualifiers would assert a cultivar and preparation the recipe never stated.",
+      "remedy": "TARGETED_NUMERICAL_SOURCE_REVIEW"
+    },
+    {
+      "candidate": "Relax BIND-039 so any diced carrot reaches QE-MATH-0282-T1-08",
+      "rows_that_would_have_been_gained": 29,
+      "decision": "REJECTED",
+      "reason": "The reviewed entry is specific to a 1/3\"-1/2\" dice. Recipe rows that say only \"diced\" state no dice size.",
+      "remedy": "TARGETED_NUMERICAL_SOURCE_REVIEW"
+    },
+    {
+      "candidate": "Bind \"dried thyme\" to QE-FIFTY-1_3-429 \"Thyme, ground\"",
+      "rows_that_would_have_been_gained": 184,
+      "decision": "REJECTED",
+      "reason": "Ground thyme and dried thyme leaf are different products with different densities. The registry holds no dried-leaf thyme entry.",
+      "remedy": "TARGETED_NUMERICAL_SOURCE_REVIEW"
+    }
+  ],
+  "defects_reported_not_fixed": [
+    {
+      "id": "S1-DEFECT-001",
+      "where": "occurrence-bindings.json BIND-016 (cayenne, red-pepper, mode source_conflict_held)",
+      "detail": "Both profiles it cites, QE-FIFTY-1_3-097 and QE-FIFTY-1_3-330, are absent from the reviewed registry. The 64 held cayenne rows are therefore held against evidence that cannot be inspected.",
+      "impact": "The hold outcome is conservative and correct; its stated justification is unresolvable.",
+      "action": "Report to the coordinator. Resolving it needs targeted extraction of those two rows, which is a separate evidence task; nothing is invented here."
+    }
+  ]
+}

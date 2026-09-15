@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smiley — printable recipe</title>
+<link rel="stylesheet" href="print.css">
+<style>
+  /* This page is the paper document on its own: no app chrome to hide. */
+  body { margin: 0; background: #eef0f2; }
+  #page { background:#fff; max-width: 216mm; margin: 0 auto; padding: 16mm 20mm; min-height: 100vh; }
+  #status { font: 13px ui-sans-serif, system-ui, sans-serif; color: #5a636c; padding: 12mm 0; }
+  @media print { body { background:#fff; } #page { max-width:none; margin:0; padding:0; min-height:0; } #status { display:none; } }
+</style>
+</head>
+<body>
+<div id="page">
+  <div id="status">Loading the recipe…</div>
+  <div id="print-root"></div>
+</div>
+
+<script src="../reference/ui/vendor/quantity-engine.js"></script>
+<script src="../reference/ui/vendor/corpus-adapter.js"></script>
+<script src="../reference/ui/vendor/s1-bundle.js"></script>
+<script src="presenter.js"></script>
+<script src="data.js"></script>
+<script src="source-yields.js"></script>
+<script src="yield-display.js"></script>
+<script src="print.js"></script>
+<script>
+/* =============================================================================
+ * Standalone printable route. Same presenter, same print template, same
+ * evaluator as the app — it just takes the scenario from the URL so a recipe
+ * can be printed (or saved as PDF by the browser) without the app shell.
+ *
+ *   print.html?recipe=<recipe_id>[&multiplier=N][&portions=N][&costs=1]
+ *   print.html?recipes=<id>,<id>[&multiplier=N][&costs=1]
+ * ========================================================================== */
+(function () {
+  'use strict';
+  var params = new URLSearchParams(location.search);
+  var ids = (params.get('recipes') || params.get('recipe') || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+  var multiplier = params.get('multiplier') ? Number(params.get('multiplier')) : null;
+  var portions = params.get('portions') ? Number(params.get('portions')) : null;
+  var costs = params.get('costs') === '1';
+  var status = document.getElementById('status');
+
+  if (!ids.length) {
+    status.textContent = 'Add ?recipe=<recipe_id> to this URL. Optional: &multiplier=2, &portions=8, &costs=1, or &recipes=id1,id2 for a pack.';
+    return;
+  }
+
+  var selections = {};
+  function selectionFor(id) {
+    if (!selections[id]) {
+      selections[id] = {
+        recipe_id: id, portions: portions, multiplier: multiplier,
+        choices: {}, choice_occurrences: {}, explicit_text_choice: {}, include_optional: false
+      };
+    }
+    return selections[id];
+  }
+
+  SmileyData.load()
+    .then(function () { return Promise.all(ids.map(function (id) { return SmileyData.ensureRecipeLoaded(id); })); })
+    .then(function () {
+      var model = SmileyPrint.captureModel({
+        recipeIds: ids,
+        scaled: multiplier !== null || portions !== null,
+        includeCosts: costs,
+        selectionFor: selectionFor,
+        profileId: 'retail-walmart-33445-recorded',
+        presetId: null,
+        context: 'home',
+        inventory: { scenario: 'UNKNOWN', items: [] }
+      });
+      SmileyPrint.buildDocument(model, document.getElementById('print-root'));
+      status.hidden = true;
+      document.title = model.recipes.map(function (r) { return r.title; }).join(' + ');
+      window.__printModel = model;      // read by the print tests
+      document.body.setAttribute('data-print-ready', 'true');
+    })
+    .catch(function (e) {
+      status.textContent = 'Could not build the printable recipe: ' + e.message;
+    });
+})();
+</script>
+</body>
+</html>

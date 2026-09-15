@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1"><meta name="theme-color" content="#04090a">
+<title>Smiley / Culinary Universe</title><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js"}}</script></head>
+<body data-view="rest">
+<div id="stage" aria-hidden="true"></div>
+<header class="top"><a class="brand" href="./" aria-label="Smiley home">smiley<span>CULINARY UNIVERSE</span></a><span id="status" role="status" aria-live="polite">A universe of printed pairings</span><nav><button class="glass" data-act="pairings" aria-label="Find an ingredient">⌕ Find</button><button class="glass" id="recipes-btn" data-act="recipes" disabled>Recipes</button></nav></header>
+<aside id="graphics-note" class="glass note" hidden role="status">This browser could not open the clouds. Search, pairings and recipes still work.</aside>
+<section class="dock" aria-label="Cloud journey controls">
+  <p id="where"></p>
+  <div class="actions"><button class="glass primary" id="primary" data-act="pairings">Choose where to begin</button><button class="glass" data-act="pairings">Pairings</button><button class="glass" id="connections-btn" data-act="connections" disabled>Connections</button></div>
+  <nav class="chain" aria-label="Your chain"><div id="chain"></div><button class="glass quiet" id="undo" data-act="undo" disabled>Undo</button></nav>
+  <div class="utility"><button class="glass quiet" id="overview" data-act="overview" disabled>See whole chain</button><button class="glass quiet" data-act="rest">Whole universe</button><span class="hint">Drag to look · Pinch to move · Tap a name to travel</span><button class="glass quiet" id="motion" data-act="motion" aria-pressed="false">Pause</button></div>
+</section>
+<section id="sheet" class="sheet glass" hidden aria-label="Details"></section>
+<section id="work" hidden aria-label="Recipe workspace"><div class="work-bar"><button class="glass" data-act="work-back" id="work-back">← Back to the clouds</button><span id="work-title"></span></div><iframe id="work-frame" title="Smiley OS recipe workspace"></iframe></section>
+<script type="module" src="app.js"></script></body></html>

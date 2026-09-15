@@ -1,0 +1,25 @@
+/* Original native geometry and lighting for V04. Abstract material studies, never dish photographs. */
+(function(g){'use strict';
+var NS='http://www.w3.org/2000/svg';
+function el(n,a,cs){var e=document.createElementNS(NS,n);Object.keys(a||{}).forEach(k=>e.setAttribute(k,a[k]));(cs||[]).forEach(c=>e.appendChild(c));return e;}
+function hash(s){var h=2166136261;for(var i=0;i<s.length;i++)h=Math.imul(h^s.charCodeAt(i),16777619);return h>>>0;}
+var ids=['gift-southern-p82-tomato-basil-soup','pt-p60-jerusalem-sesame-bagels','jubilee-p324-louisiana-red-beans-and-rice'];
+function family(id,row){var t=(row&&row.title||id).toLowerCase();return /soup|sauce|broth|stock/.test(t)?0:/bread|bagel|biscuit|dough|rolls|cake/.test(t)?1:/beans|lentil|pea[s-]|rice|grain/.test(t)?2:3;}
+var palettes=[[76,225,203],[181,155,255],[233,185,105],[153,198,220]],names=['Liquid fold','Laminated loop','Grain array','Archive form'];
+function point(f,u,v,seed){var a=u*Math.PI*2,b=v*Math.PI*2,tw=seed*.00001;
+if(f===0){var q=v*Math.PI,rr=1+.18*Math.sin(a*3)*Math.sin(q*2);return[rr*Math.sin(q)*Math.cos(a),.92*Math.cos(q)+.16*Math.sin(a*2)*Math.sin(q),rr*Math.sin(q)*Math.sin(a)];}
+if(f===1){var rr=1+.24*Math.cos(b)*(1+.2*Math.sin(8*a));return [rr*Math.cos(a),.35*Math.sin(b)+.42*Math.sin(2*a),rr*Math.sin(a)];}
+if(f===2){var r2=.93+.24*Math.cos(b);return [r2*Math.cos(a),.52*Math.sin(b)+.25*Math.cos(5*a),r2*Math.sin(a)];}
+var width=(v-.5)*.92,r3=1+width*Math.cos(a*.5);return[r3*Math.cos(a),width*Math.sin(a*.5)+.18*Math.sin(a*2),r3*Math.sin(a)];}
+function mesh(f,seed,nu,nv){var faces=[];
+if(f===2){for(var o=0;o<7;o++){var theta=o*2.4,cr=o===0?0:.72,ox=Math.cos(theta)*cr,oz=Math.sin(theta)*cr,oy=(o%3-1)*.22;for(var x=0;x<28;x++)for(var y=0;y<14;y++){function pt(a,b){a=a/28*Math.PI*2;b=b/14*Math.PI;var sx=.23*Math.sin(b)*Math.cos(a),sy=.55*Math.cos(b),sz=.21*Math.sin(b)*Math.sin(a);return[ox+sx*Math.cos(theta)-sy*Math.sin(theta),oy+sx*Math.sin(theta)+sy*Math.cos(theta),oz+sz];}faces.push({ps:[pt(x,y),pt(x+1,y),pt(x+1,y+1),pt(x,y+1)],band:y,ix:x});}}return faces;}
+for(var i=0;i<nu;i++)for(var j=0;j<nv;j++){var ps=[point(f,i/nu,j/nv,seed),point(f,(i+1)/nu,j/nv,seed),point(f,(i+1)/nu,(j+1)/nv,seed),point(f,i/nu,(j+1)/nv,seed)];faces.push({ps,band:j%nv,ix:i});}return faces;}
+function rot(p,rx,ry){var x=p[0]*Math.cos(ry)+p[2]*Math.sin(ry),z=-p[0]*Math.sin(ry)+p[2]*Math.cos(ry),y=p[1]*Math.cos(rx)-z*Math.sin(rx);return[x,y,p[1]*Math.sin(rx)+z*Math.cos(rx)];}
+function project(faces,f,rx,ry,w,h){var col=palettes[f],scale=Math.min(w/3.25,h/2.8);return faces.map(function(face){var p=face.ps.map(p=>rot(p,rx,ry)),a=p[0],b=p[1],c=p[2],u=b.map((v,i)=>v-a[i]),v=c.map((v,i)=>v-a[i]),n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]],len=Math.hypot(...n)||1;n=n.map(x=>x/len);var light=Math.abs(n[0]*-.35+n[1]*-.65+n[2]*.7),spec=Math.pow(Math.abs(n[0]*-.12+n[1]*-.35+n[2]*.93),24),rim=Math.pow(1-Math.abs(n[2]),3);var rgb=col.map(v=>Math.min(255,Math.round(v*(.075+.55*light)+175*spec+65*rim)));return{z:p.reduce((s,p)=>s+p[2],0)/4,ps:p.map(p=>{var d=4.8/(4.8-p[2]);return[w/2+p[0]*scale*d,h/2+p[1]*scale*d]}),color:'rgb('+rgb.join(',')+')'};}).sort((a,b)=>a.z-b.z);}
+var artCache=new Map();
+function svgMarkup(id,row){if(artCache.has(id))return artCache.get(id);var seed=hash(id),f=family(id,row),faces=project(mesh(f,seed,72,24),f,.75,(seed%100)/80,640,360);var out='<svg xmlns="'+NS+'" viewBox="0 0 640 360"><defs><radialGradient id="gl"><stop stop-color="'+['#103b37','#2d214d','#382c17','#20303b'][f]+'"/><stop offset="1" stop-color="#0b1016"/></radialGradient><linearGradient id="edge"><stop stop-color="#70848d"/><stop offset=".5" stop-color="#18232d"/><stop offset="1" stop-color="#40515c"/></linearGradient></defs><rect width="640" height="360" fill="url(#gl)"/><ellipse cx="320" cy="309" rx="196" ry="27" fill="#05090e"/><ellipse cx="320" cy="309" rx="218" ry="32" fill="none" stroke="url(#edge)"/>';
+faces.forEach(p=>out+='<path d="M'+p.ps.map(x=>x.map(v=>v.toFixed(1)).join(' ')).join('L')+'Z" fill="'+p.color+'" stroke="'+p.color+'" stroke-width=".5"/>');out+='<path d="M24 56V24H56 M584 24H616V56 M24 304V336H56 M584 336H616V304" stroke="#60747b" stroke-width="1" fill="none"/><text x="38" y="52" fill="#a4b6bd" font-family="monospace" font-size="11">'+names[f].toUpperCase()+'</text><text x="602" y="318" text-anchor="end" fill="#8ca1a9" font-family="monospace" font-size="10">'+seed.toString(16).toUpperCase()+'</text></svg>';if(artCache.size>=60)artCache.delete(artCache.keys().next().value);artCache.set(id,out);return out;}
+function cardArt(id,row){var f=family(id,row),img=document.createElement('img');img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svgMarkup(id,row));img.alt=names[f]+': original abstract material study, not a depiction of the finished dish.';img.width=640;img.height=360;img.decoding='async';img.loading='lazy';return{svg:img,treatment:f===3?'fallback':'procedural',motif:names[f]};}
+function folioStudy(){return cardArt('archive-neutral').svg;}
+g.SmileyArt={cardArt,folioStudy,bespokeIds:ids,svgEl:el,mesh,project,family,hash,palettes,names};
+})(window);

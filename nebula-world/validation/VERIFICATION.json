@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "base": "http://127.0.0.1:8910",
+  "results": [
+    {
+      "check": "Rest view renders the whole universe",
+      "status": "PASS",
+      "detail": "966 places, 36,895 printed pairings, 0 fps at dpr 1, beacons: Garlic, Cinnamon, Fennel, Olive Oil, Shrimp, Tofu"
+    },
+    {
+      "check": "Travel to Basil, neighbourhood resolves",
+      "status": "PASS",
+      "detail": "368 printed partners, 11 labelled around you"
+    },
+    {
+      "check": "Basil + Garlic chained with printed connection",
+      "status": "PASS",
+      "detail": "4 printed occurrence(s) across 2 book(s); first: \"BASIL (See also Basil, Thai, and Lemon Basil) → *GARLIC\" p.91"
+    },
+    {
+      "check": "Chain of three persists in overview",
+      "status": "PASS",
+      "detail": "Basil · Garlic · Tomato"
+    },
+    {
+      "check": "Connections show the books' own wording, no scores",
+      "status": "PASS",
+      "detail": "tomato–garlic 5 printed; tomato–basil 6 printed"
+    },
+    {
+      "check": "Recipes containing all three",
+      "status": "PASS",
+      "detail": "20 of 1,497 — matches the integration QA receipt (universeMatches.basilTomatoesGarlic = 20)"
+    },
+    {
+      "check": "Recipe opens in Smiley OS inside the same world",
+      "status": "PASS",
+      "detail": "Blt Canapés with Basil Mayonnaise — 2739 chars, 29 rows (id atba-p191-blt-canap-s-with-basil-mayonnaise)"
+    },
+    {
+      "check": "Back returns to the same chain",
+      "status": "PASS",
+      "detail": "basil · garlic · tomatoes"
+    },
+    {
+      "check": "Undo and shareable state",
+      "status": "PASS",
+      "detail": "#chain=basil,garlic&focus=tomatoes"
+    },
+    {
+      "check": "Phone layout, state restored from URL",
+      "status": "PASS",
+      "detail": "0 fps at dpr 1"
+    },
+    {
+      "check": "No page or console errors",
+      "status": "PASS",
+      "detail": "0 iframe-swap aborts tolerated"
+    }
+  ],
+  "physical_iPad": "NOT_RUN",
+  "physical_iPhone": "NOT_RUN"
+}

@@ -1,0 +1,1499 @@
+{
+  "version": "1.0",
+  "bindings": [
+    {
+      "id": "BIND-001",
+      "ingredient_ids": [
+        "black-pepper",
+        "white-pepper"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-331"
+      ],
+      "require_all": [
+        "\\bground\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:whole|cracked|corns?|grinds?)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-002",
+      "ingredient_ids": [
+        "black-pepper"
+      ],
+      "profiles": [
+        "QE-MATH-0281-SP-05"
+      ],
+      "require_all": [
+        "\\bcracked\\b"
+      ],
+      "exclude_any": [
+        "\\bground\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-003",
+      "ingredient_ids": [
+        "cinnamon"
+      ],
+      "profiles": [
+        "QE-MATH-0281-SP-02"
+      ],
+      "require_all": [
+        "\\bground\\b"
+      ],
+      "exclude_any": [
+        "\\bsticks?\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-004",
+      "ingredient_ids": [
+        "cinnamon"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-134"
+      ],
+      "require_all": [
+        "\\bground\\b"
+      ],
+      "exclude_any": [
+        "\\bsticks?\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-005",
+      "ingredient_ids": [
+        "cumin"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-179"
+      ],
+      "require_all": [
+        "\\bground\\b"
+      ],
+      "exclude_any": [
+        "\\bwhole\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-006",
+      "ingredient_ids": [
+        "nutmeg"
+      ],
+      "profiles": [
+        "QE-MATH-0281-SP-04",
+        "QE-FIFTY-1_3-279"
+      ],
+      "require_all": [
+        "\\bground\\b"
+      ],
+      "exclude_any": [],
+      "mode": "named_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "Both sources give different ground-nutmeg volume weights; owner default unset.",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-007",
+      "ingredient_ids": [
+        "coriander"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-146"
+      ],
+      "require_all": [
+        "\\bground\\b"
+      ],
+      "exclude_any": [
+        "\\bfresh\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-008",
+      "ingredient_ids": [
+        "coriander"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-145"
+      ],
+      "require_all": [
+        "\\b(?:whole|seeds?)\\b"
+      ],
+      "exclude_any": [
+        "\\bground\\b",
+        "\\bfresh\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-009",
+      "ingredient_ids": [
+        "paprika"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-311"
+      ],
+      "require_all": [
+        "\\bpaprika\\b"
+      ],
+      "exclude_any": [
+        "\\bfresh\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-010",
+      "ingredient_ids": [
+        "allspice"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-001"
+      ],
+      "require_all": [
+        "\\bground\\b"
+      ],
+      "exclude_any": [
+        "\\bwhole\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-011",
+      "ingredient_ids": [
+        "cloves"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-138"
+      ],
+      "require_all": [
+        "\\bground\\b"
+      ],
+      "exclude_any": [
+        "\\bwhole\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-012",
+      "ingredient_ids": [
+        "turmeric"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-442"
+      ],
+      "require_all": [
+        "\\bground\\b"
+      ],
+      "exclude_any": [
+        "\\bfresh\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-013",
+      "ingredient_ids": [
+        "ginger"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-219"
+      ],
+      "require_all": [
+        "\\bground\\b"
+      ],
+      "exclude_any": [
+        "\\bfresh\\b",
+        "\\bgrated\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-014",
+      "ingredient_ids": [
+        "garlic-powder"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-212"
+      ],
+      "require_all": [
+        "\\bgarlic powder\\b"
+      ],
+      "exclude_any": [],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-015",
+      "ingredient_ids": [
+        "onion-powder"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-296"
+      ],
+      "require_all": [
+        "\\bonion powder\\b"
+      ],
+      "exclude_any": [],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-016",
+      "ingredient_ids": [
+        "cayenne",
+        "red-pepper"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-097",
+        "QE-FIFTY-1_3-330"
+      ],
+      "require_all": [
+        "\\b(?:cayenne|ground red pepper)\\b"
+      ],
+      "exclude_any": [],
+      "mode": "source_conflict_held",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "Both conflicting source rows remain held, not selectable numerical rules.",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-017",
+      "ingredient_ids": [
+        "red-pepper",
+        "chile-pepper-flakes"
+      ],
+      "profiles": [
+        "QE-MATH-0281-SP-01",
+        "QE-FIFTY-1_3-333"
+      ],
+      "require_all": [
+        "\\b(?:crushed|flakes)\\b"
+      ],
+      "exclude_any": [
+        "\\bbell\\b",
+        "\\bjarred\\b",
+        "\\broasted\\b"
+      ],
+      "mode": "named_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "Crushed chile, not fresh red bell pepper; two native reference estimates.",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-018",
+      "ingredient_ids": [
+        "butter",
+        "unsalted-butter"
+      ],
+      "profiles": [
+        "QE-MATH-0287-T3-00",
+        "QE-FIFTY-1_3-074"
+      ],
+      "require_all": [
+        "\\bbutter\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:clarified|melted|whipped|brown|browned|ghee)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-019",
+      "ingredient_ids": [
+        "vegetable-oil"
+      ],
+      "profiles": [
+        "QE-MATH-0287-T3-02",
+        "QE-FIFTY-1_3-282"
+      ],
+      "require_all": [
+        "\\bvegetable oil\\b"
+      ],
+      "exclude_any": [],
+      "mode": "named_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-020",
+      "ingredient_ids": [
+        "baking-powder"
+      ],
+      "profiles": [
+        "QE-MATH-0287-T2-00",
+        "QE-FIFTY-1_3-022"
+      ],
+      "require_all": [
+        "\\bbaking powder\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:chile|chili|bicarb|soda)\\b"
+      ],
+      "mode": "named_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-021",
+      "ingredient_ids": [
+        "baking-soda"
+      ],
+      "profiles": [
+        "QE-MATH-0287-T2-01",
+        "QE-FIFTY-1_3-024"
+      ],
+      "require_all": [
+        "\\b(?:baking soda|bicarbonate)\\b"
+      ],
+      "exclude_any": [],
+      "mode": "named_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-022",
+      "ingredient_ids": [
+        "granulated-sugar",
+        "sugar"
+      ],
+      "profiles": [
+        "QE-MATH-0287-T1-00",
+        "QE-FIFTY-1_3-419"
+      ],
+      "require_all": [
+        "\\bgranulated\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:superfine|caster|brown|powdered)\\b"
+      ],
+      "mode": "named_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-023",
+      "ingredient_ids": [
+        "sugar"
+      ],
+      "profiles": [
+        "QE-MATH-0287-T1-00",
+        "QE-FIFTY-1_3-419"
+      ],
+      "require_all": [],
+      "exclude_any": [],
+      "mode": "form_and_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "Generic sugar has no automatic granulated default.",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-024",
+      "ingredient_ids": [
+        "honey"
+      ],
+      "profiles": [
+        "QE-MATH-0287-T1-01",
+        "QE-FIFTY-1_3-233"
+      ],
+      "require_all": [
+        "\\bhoney\\b"
+      ],
+      "exclude_any": [],
+      "mode": "named_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-025",
+      "ingredient_ids": [
+        "molasses"
+      ],
+      "profiles": [
+        "QE-MATH-0287-T1-02",
+        "QE-FIFTY-1_3-268"
+      ],
+      "require_all": [
+        "\\bmolasses\\b"
+      ],
+      "exclude_any": [],
+      "mode": "named_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-026",
+      "ingredient_ids": [
+        "all-purpose-flour",
+        "flour"
+      ],
+      "profiles": [
+        "QE-MATH-0286-T3-00",
+        "QE-FIFTY-1_5-APF-UNSIFTED"
+      ],
+      "require_all": [
+        "\\ball.purpose\\b"
+      ],
+      "exclude_any": [
+        "\\bself.rising\\b"
+      ],
+      "mode": "method_and_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "Method must match the selected reference; do not infer sifted/scooped/spooned.",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-027",
+      "ingredient_ids": [
+        "bread-flour"
+      ],
+      "profiles": [
+        "QE-MATH-0286-T3-01"
+      ],
+      "require_all": [
+        "\\bbread flour\\b"
+      ],
+      "exclude_any": [],
+      "mode": "method_and_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-028",
+      "ingredient_ids": [
+        "cake-flour"
+      ],
+      "profiles": [
+        "QE-MATH-0286-T3-02",
+        "QE-FIFTY-1_3-207"
+      ],
+      "require_all": [
+        "\\bcake\\b"
+      ],
+      "exclude_any": [],
+      "mode": "method_and_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-029",
+      "ingredient_ids": [
+        "cornstarch"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-154"
+      ],
+      "require_all": [
+        "\\bcornstarch\\b"
+      ],
+      "exclude_any": [],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-030",
+      "ingredient_ids": [
+        "cornmeal"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-152"
+      ],
+      "require_all": [
+        "\\bcoarse\\b"
+      ],
+      "exclude_any": [],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-031",
+      "ingredient_ids": [
+        "salt"
+      ],
+      "profiles": [
+        "QE-MATH-0287-T2-03"
+      ],
+      "require_all": [
+        "\\btable (?:grind )?salt\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:kosher|sea|flake|morton|diamond)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-032",
+      "ingredient_ids": [
+        "salt",
+        "kosher-salt"
+      ],
+      "profiles": [
+        "QE-MATH-0287-T2-02"
+      ],
+      "require_all": [
+        "\\bkosher\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:morton|diamond)\\b"
+      ],
+      "mode": "brand_and_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "Unbranded flake reference is not a brand conversion. Explicit assumption required.",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-033",
+      "ingredient_ids": [
+        "sour-cream"
+      ],
+      "profiles": [
+        "QE-MATH-0288-T1-03",
+        "QE-FIFTY-1_3-173"
+      ],
+      "require_all": [
+        "\\bsour cream\\b"
+      ],
+      "exclude_any": [],
+      "mode": "named_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-034",
+      "ingredient_ids": [
+        "tahini"
+      ],
+      "profiles": [
+        "QE-MATH-0287-T4-04"
+      ],
+      "require_all": [
+        "\\btahini\\b"
+      ],
+      "exclude_any": [],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-035",
+      "ingredient_ids": [
+        "tomato-paste"
+      ],
+      "profiles": [
+        "QE-FIFTY-1_3-435"
+      ],
+      "require_all": [
+        "\\btomato paste\\b"
+      ],
+      "exclude_any": [],
+      "mode": "automatic_reference",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-036",
+      "ingredient_ids": [
+        "curry-powder"
+      ],
+      "profiles": [
+        "QE-MATH-0281-SP-03",
+        "QE-FIFTY-1_3-181"
+      ],
+      "require_all": [
+        "\\bcurry powder\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:homemade|recipe|page|p\\.|blend from)\\b"
+      ],
+      "mode": "named_policy_required",
+      "request_basis": "AP",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-037",
+      "ingredient_ids": [
+        "carrot"
+      ],
+      "profiles": [
+        "QE-MATH-0282-T1-07"
+      ],
+      "require_all": [
+        "\\bchopped\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-038",
+      "ingredient_ids": [
+        "carrot"
+      ],
+      "profiles": [
+        "QE-MATH-0282-T1-09"
+      ],
+      "require_all": [
+        "\\bgrated\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-039",
+      "ingredient_ids": [
+        "carrot"
+      ],
+      "profiles": [
+        "QE-MATH-0282-T1-08"
+      ],
+      "require_all": [
+        "\\bdice",
+        "(?:1/3|\u2153).*(?:1/2|\u00bd)"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-040",
+      "ingredient_ids": [
+        "onion"
+      ],
+      "profiles": [
+        "QE-MATH-0283-T1-01"
+      ],
+      "require_all": [
+        "(?:1/2|\u00bd).?inch",
+        "\\b(?:dice|pieces)"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b",
+        "\\b(?:green|spring) onions?\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-041",
+      "ingredient_ids": [
+        "onion"
+      ],
+      "profiles": [
+        "QE-MATH-0283-T1-03"
+      ],
+      "require_all": [
+        "\\bsliced\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-042",
+      "ingredient_ids": [
+        "green-onion"
+      ],
+      "profiles": [
+        "QE-MATH-0283-T1-05"
+      ],
+      "require_all": [
+        "\\bchopped\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-043",
+      "ingredient_ids": [
+        "green-bell-pepper"
+      ],
+      "profiles": [
+        "QE-MATH-0283-T1-07"
+      ],
+      "require_all": [
+        "\\bchopped\\b",
+        "\\bgreen\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-044",
+      "ingredient_ids": [
+        "red-pepper",
+        "red-bell-pepper"
+      ],
+      "profiles": [
+        "QE-MATH-0283-T1-08"
+      ],
+      "require_all": [
+        "\\bbell\\b",
+        "\\bchopped\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b",
+        "\\b(?:ground|cayenne|flakes|or green)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-045",
+      "ingredient_ids": [
+        "tomato"
+      ],
+      "profiles": [
+        "QE-MATH-0283-T1-17"
+      ],
+      "require_all": [
+        "\\bpeeled\\b",
+        "\\bseeded\\b",
+        "\\bchopped\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-046",
+      "ingredient_ids": [
+        "tomato",
+        "roma-tomato"
+      ],
+      "profiles": [
+        "QE-MATH-0283-T1-18"
+      ],
+      "require_all": [
+        "\\broma\\b",
+        "\\bdiced\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-047",
+      "ingredient_ids": [
+        "tomato",
+        "roma-tomato"
+      ],
+      "profiles": [
+        "QE-MATH-0283-T1-19"
+      ],
+      "require_all": [
+        "\\broma\\b",
+        "\\bsliced\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-048",
+      "ingredient_ids": [
+        "potato"
+      ],
+      "profiles": [
+        "QE-MATH-0283-T1-10"
+      ],
+      "require_all": [
+        "\\bpeeled\\b",
+        "\\bdiced\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-049",
+      "ingredient_ids": [
+        "cauliflower"
+      ],
+      "profiles": [
+        "QE-MATH-0282-T1-11"
+      ],
+      "require_all": [
+        "\\bflorets\\b",
+        "\\b1.inch\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-050",
+      "ingredient_ids": [
+        "butternut-squash"
+      ],
+      "profiles": [
+        "QE-MATH-0283-T1-12"
+      ],
+      "require_all": [
+        "\\bcubed\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-051",
+      "ingredient_ids": [
+        "zucchini"
+      ],
+      "profiles": [
+        "QE-MATH-0283-T1-15"
+      ],
+      "require_all": [
+        "\\bsliced\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-052",
+      "ingredient_ids": [
+        "strawberry",
+        "strawberries"
+      ],
+      "profiles": [
+        "QE-MATH-0285-T1-03"
+      ],
+      "require_all": [
+        "\\bsliced\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-053",
+      "ingredient_ids": [
+        "banana"
+      ],
+      "profiles": [
+        "QE-MATH-0284-T1-05"
+      ],
+      "require_all": [
+        "\\bsliced\\b"
+      ],
+      "exclude_any": [
+        "\\b(?:cooked|roasted|sauteed|saut\u00e9ed|puree|pur\u00e9e|mashed|canned|frozen|dried|jarred|pickled)\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-054",
+      "ingredient_ids": [
+        "basil"
+      ],
+      "profiles": [
+        "QE-MATH-0281-HB-00"
+      ],
+      "require_all": [
+        "\\bfresh\\b",
+        "\\bchopped\\b",
+        "\\b(?:leaves|stemless)\\b"
+      ],
+      "exclude_any": [
+        "\\bdried\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-055",
+      "ingredient_ids": [
+        "cilantro"
+      ],
+      "profiles": [
+        "QE-MATH-0281-HB-01"
+      ],
+      "require_all": [
+        "\\bfresh\\b",
+        "\\bchopped\\b",
+        "\\b(?:leaves|stemless)\\b"
+      ],
+      "exclude_any": [
+        "\\bdried\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-056",
+      "ingredient_ids": [
+        "oregano"
+      ],
+      "profiles": [
+        "QE-MATH-0281-HB-02"
+      ],
+      "require_all": [
+        "\\bfresh\\b",
+        "\\bchopped\\b",
+        "\\b(?:leaves|stemless)\\b"
+      ],
+      "exclude_any": [
+        "\\bdried\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-057",
+      "ingredient_ids": [
+        "parsley"
+      ],
+      "profiles": [
+        "QE-MATH-0281-HB-03"
+      ],
+      "require_all": [
+        "\\bfresh\\b",
+        "\\bchopped\\b",
+        "\\b(?:leaves|stemless)\\b",
+        "\\b(?:italian|flat.leaf)\\b"
+      ],
+      "exclude_any": [
+        "\\bdried\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-058",
+      "ingredient_ids": [
+        "rosemary"
+      ],
+      "profiles": [
+        "QE-MATH-0281-HB-04"
+      ],
+      "require_all": [
+        "\\bfresh\\b",
+        "\\bchopped\\b",
+        "\\b(?:leaves|stemless)\\b"
+      ],
+      "exclude_any": [
+        "\\bdried\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-059",
+      "ingredient_ids": [
+        "tarragon"
+      ],
+      "profiles": [
+        "QE-MATH-0281-HB-05"
+      ],
+      "require_all": [
+        "\\bfresh\\b",
+        "\\bchopped\\b",
+        "\\b(?:leaves|stemless)\\b"
+      ],
+      "exclude_any": [
+        "\\bdried\\b"
+      ],
+      "mode": "automatic_reference",
+      "request_basis": "prepared_raw",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-060",
+      "ingredient_ids": [
+        "rice"
+      ],
+      "profiles": [
+        "QE-SCHMIDT-0168-WHITE"
+      ],
+      "require_all": [
+        "\\bwhite\\b",
+        "\\blong.grain\\b",
+        "\\bcooked\\b"
+      ],
+      "exclude_any": [
+        "\\buncooked\\b"
+      ],
+      "mode": "named_policy_required",
+      "request_basis": "cooked",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-061",
+      "ingredient_ids": [
+        "converted-rice"
+      ],
+      "profiles": [
+        "QE-SCHMIDT-0168-CONVERTED"
+      ],
+      "require_all": [
+        "\\bconverted\\b",
+        "\\bcooked\\b"
+      ],
+      "exclude_any": [
+        "\\buncooked\\b"
+      ],
+      "mode": "named_policy_required",
+      "request_basis": "cooked",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-062",
+      "ingredient_ids": [
+        "brown-rice"
+      ],
+      "profiles": [
+        "QE-SCHMIDT-0168-BROWN"
+      ],
+      "require_all": [
+        "\\bbrown\\b",
+        "\\bcooked\\b"
+      ],
+      "exclude_any": [
+        "\\buncooked\\b"
+      ],
+      "mode": "named_policy_required",
+      "request_basis": "cooked",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    },
+    {
+      "id": "BIND-063",
+      "ingredient_ids": [
+        "instant-rice"
+      ],
+      "profiles": [
+        "QE-SCHMIDT-0168-INSTANT"
+      ],
+      "require_all": [
+        "\\binstant\\b",
+        "\\bcooked\\b"
+      ],
+      "exclude_any": [
+        "\\buncooked\\b"
+      ],
+      "mode": "named_policy_required",
+      "request_basis": "cooked",
+      "target_unit": "oz",
+      "target_basis": "AP",
+      "notes": "",
+      "title_predicate": null
+    }
+  ],
+  "ready_form_ids": [
+    "water",
+    "milk",
+    "whole-milk",
+    "heavy-cream",
+    "whipping-cream",
+    "half-and-half",
+    "buttermilk",
+    "sour-cream",
+    "plain-yogurt",
+    "yogurt",
+    "olive-oil",
+    "extra-virgin-olive-oil",
+    "vegetable-oil",
+    "canola-oil",
+    "peanut-oil",
+    "sesame-oil",
+    "coconut-oil",
+    "red-wine-vinegar",
+    "white-wine-vinegar",
+    "cider-vinegar",
+    "apple-cider-vinegar",
+    "balsamic-vinegar",
+    "rice-vinegar",
+    "distilled-white-vinegar",
+    "white-vinegar",
+    "vinegar",
+    "vanilla-extract",
+    "almond-extract",
+    "soy-sauce",
+    "worcestershire-sauce",
+    "fish-sauce",
+    "hot-sauce",
+    "sherry",
+    "dry-sherry",
+    "white-wine",
+    "red-wine",
+    "wine",
+    "beer",
+    "bourbon",
+    "brandy",
+    "rum",
+    "lemon-juice",
+    "lime-juice",
+    "orange-juice",
+    "chicken-stock",
+    "chicken-broth",
+    "vegetable-stock",
+    "vegetable-broth",
+    "beef-stock",
+    "beef-broth",
+    "coconut-milk",
+    "condensed-milk",
+    "evaporated-milk",
+    "tomato-juice",
+    "tomato-paste",
+    "ketchup",
+    "mayonnaise",
+    "dijon-mustard",
+    "mustard",
+    "honey",
+    "molasses",
+    "maple-syrup",
+    "corn-syrup",
+    "tahini",
+    "peanut-butter",
+    "salt",
+    "kosher-salt",
+    "sea-salt",
+    "black-pepper",
+    "white-pepper",
+    "cinnamon",
+    "cumin",
+    "nutmeg",
+    "cloves",
+    "allspice",
+    "paprika",
+    "cayenne",
+    "turmeric",
+    "ginger",
+    "garlic-powder",
+    "onion-powder",
+    "baking-powder",
+    "baking-soda",
+    "cornstarch",
+    "cream-of-tartar",
+    "sugar",
+    "granulated-sugar",
+    "brown-sugar",
+    "powdered-sugar",
+    "confectioners-sugar",
+    "all-purpose-flour",
+    "bread-flour",
+    "cake-flour",
+    "self-rising-flour",
+    "flour",
+    "cornmeal",
+    "rice",
+    "brown-rice",
+    "converted-rice",
+    "instant-rice",
+    "butter",
+    "unsalted-butter",
+    "shortening",
+    "margarine"
+  ],
+  "whole_count_ids": [
+    "onion",
+    "red-onion",
+    "yellow-onion",
+    "white-onion",
+    "sweet-onion",
+    "shallot",
+    "carrot",
+    "potato",
+    "sweet-potato",
+    "tomato",
+    "roma-tomato",
+    "lemon",
+    "lime",
+    "orange",
+    "apple",
+    "pear",
+    "banana",
+    "peach",
+    "nectarine",
+    "avocado",
+    "cucumber",
+    "zucchini",
+    "green-bell-pepper",
+    "red-bell-pepper",
+    "yellow-bell-pepper",
+    "jalapeno",
+    "jalapeno-pepper",
+    "bell-pepper",
+    "eggs",
+    "egg"
+  ],
+  "owner_defaults": {
+    "salt_brand": null,
+    "flour_measuring_method": null,
+    "source_conflict_policy": null,
+    "location_price": null
+  },
+  "policy": "Only explicit ID + raw form predicates. A profile is not an automatic owner policy. Matching IDs alone do not settle form/state."
+}
