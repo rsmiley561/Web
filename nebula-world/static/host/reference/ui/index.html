@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chef Smiley S1 — Recipe to Purchase (local preview)</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app" aria-busy="true">
+  <header id="app-header">
+    <div class="header-row">
+      <h1>Chef Smiley S1 <span class="subtitle">recipe-to-purchase (local, read-only preview)</span></h1>
+      <div class="header-actions">
+        <span id="generation-badge" class="badge muted">loading generation…</span>
+        <button id="refresh-data-btn" type="button" class="btn secondary">Refresh current data</button>
+      </div>
+    </div>
+    <div class="header-row controls-row" id="global-controls">
+      <label class="control">
+        <span>Purchasing profile</span>
+        <select id="profile-select"></select>
+      </label>
+      <label class="control">
+        <span>Context</span>
+        <select id="context-select">
+          <option value="home">Home</option>
+          <option value="truck">Food truck</option>
+          <option value="restaurant">Restaurant</option>
+          <option value="consulting">Consulting</option>
+        </select>
+      </label>
+      <label class="control">
+        <span>Inventory scenario</span>
+        <select id="inventory-select">
+          <option value="UNKNOWN">Unknown (default)</option>
+          <option value="DECLARED_EMPTY">Declared empty</option>
+          <option value="ENTERED_STOCK">Entered stock</option>
+        </select>
+      </label>
+      <label class="control">
+        <span>Material convention</span>
+        <select id="preset-select">
+          <option value="">None selected (conventions stay unknown)</option>
+        </select>
+      </label>
+      <div class="control-note" id="profile-note"></div>
+      <div class="control-note" id="preset-note"></div>
+    </div>
+  </header>
+
+  <div id="app-body">
+    <aside id="sidebar">
+      <div class="sidebar-search">
+        <input id="search-input" type="search" placeholder="Search 1,497 recipes by title, book, author, cuisine, course…" aria-label="Search recipes">
+        <div id="search-count" class="muted small"></div>
+      </div>
+      <ul id="recipe-list" aria-label="Recipe results"></ul>
+    </aside>
+
+    <main id="main-content">
+      <section id="plan-section" hidden>
+        <div id="selection-chips"></div>
+        <div id="plan-summary"></div>
+        <div id="purchase-lines-section"></div>
+        <div id="recipes-detail-section"></div>
+        <div id="inventory-entry-section"></div>
+        <div id="export-section"></div>
+      </section>
+      <section id="empty-state">
+        <p>Search the library on the left, or open any recipe, to see its prepared quantities and purchasing needs immediately — no Calculate button, no model call.</p>
+      </section>
+    </main>
+
+    <aside id="snapshots-panel">
+      <h2>Snapshots</h2>
+      <button id="save-snapshot-btn" type="button" class="btn" disabled>Save snapshot</button>
+      <div id="snapshots-list" class="muted small">No snapshots saved yet this session.</div>
+    </aside>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+</div>
+<script src="vendor/quantity-engine.js"></script>
+<script src="vendor/corpus-adapter.js"></script>
+<script src="vendor/s1-bundle.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

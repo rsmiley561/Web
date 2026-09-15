@@ -1,0 +1,115 @@
+/* =============================================================================
+ * print.css — one paper format, used by the on-screen print preview and by the
+ * printer / Save as PDF. White paper, dark text, no dashboard, no graph, no
+ * decorative art, no debug tables.
+ * ========================================================================== */
+
+.p-doc {
+  --paper-fg: #16191d;
+  --paper-muted: #5a636c;
+  --paper-rule: #c9cdd2;
+  color: var(--paper-fg);
+  background: #fff;
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  font-size: 11.5pt;
+  line-height: 1.45;
+}
+
+.p-sheet {
+  background: #fff;
+  padding: 0 0 8mm;
+  max-width: 176mm;          /* fits both US Letter and A4 with sensible margins */
+  margin: 0 auto 10mm;
+}
+.p-sheet + .p-sheet { border-top: 1px solid var(--paper-rule); padding-top: 8mm; }
+
+.p-head { border-bottom: 1.5pt solid var(--paper-fg); padding-bottom: 3mm; margin-bottom: 5mm; }
+.p-title { font-size: 20pt; line-height: 1.15; margin: 0 0 1.5mm; }
+.p-cite { margin: 0 0 1mm; color: var(--paper-muted); font-size: 10pt; }
+.p-yield { margin: 0 0 1mm; font-size: 10.5pt; }
+.p-notice {
+  margin: 2mm 0 0; font-size: 10pt; font-weight: 600;
+  border-left: 2.5pt solid var(--paper-fg); padding-left: 3mm;
+}
+.p-notice.quiet { font-weight: 400; color: var(--paper-muted); border-left-color: var(--paper-rule); }
+.p-choices { margin: 1.5mm 0 0; font-size: 10pt; color: var(--paper-muted); }
+
+.p-block { margin: 0 0 6mm; }
+.p-h2 {
+  font-size: 12.5pt; letter-spacing: .06em; text-transform: uppercase;
+  margin: 0 0 2.5mm; padding-bottom: 1mm; border-bottom: .5pt solid var(--paper-rule);
+}
+.p-h3 { font-size: 11.5pt; font-style: italic; margin: 3.5mm 0 1.5mm; }
+
+.p-ings { list-style: none; margin: 0; padding: 0; }
+.p-ing { padding: 1.1mm 0; border-bottom: .25pt dotted var(--paper-rule); }
+.p-ing:last-child { border-bottom: 0; }
+.p-amt { font-weight: 700; margin-right: 2mm; font-variant-numeric: tabular-nums; }
+.p-count { color: var(--paper-muted); font-size: 9.5pt; margin-right: 2mm; }
+.p-prep { color: var(--paper-fg); }
+.p-qual { color: var(--paper-muted); font-size: 9.5pt; font-style: italic; }
+.p-optional .p-name { color: var(--paper-muted); }
+
+.p-steps { margin: 0; padding-left: 6mm; }
+.p-steps li { margin: 0 0 2.5mm; }
+
+.p-costs p { margin: 0 0 1.5mm; font-size: 10pt; }
+.p-foot {
+  margin-top: 5mm; padding-top: 2mm; border-top: .5pt solid var(--paper-rule);
+  color: var(--paper-muted); font-size: 8.5pt;
+  font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ------------------------------------------------- on-screen print preview */
+#print-preview {
+  position: fixed; inset: 0; z-index: 200; overflow: auto;
+  background: #2a3038; padding: 24px 16px 80px;
+}
+#print-preview .paper {
+  background: #fff; max-width: 216mm; margin: 0 auto; padding: 16mm 20mm;
+  box-shadow: 0 18px 50px rgba(0,0,0,.5);
+}
+#print-preview-bar {
+  position: sticky; top: 0; z-index: 2; display: flex; gap: 10px; flex-wrap: wrap;
+  align-items: center; max-width: 216mm; margin: 0 auto 14px;
+  background: #121a23; border: 1px solid #22303d; border-radius: 12px; padding: 10px 12px;
+  color: #f3ece1;
+}
+#print-preview-bar .pv-note { color: #9bb0c2; font-size: 12px; flex: 1 1 240px; }
+
+/* --------------------------------------------------------------- printing */
+@page { size: Letter; margin: 14mm; }
+@media print {
+  html, body { background: #fff !important; overflow: visible !important; height: auto !important; }
+  body * { visibility: hidden !important; }
+  #print-root, #print-root * { visibility: visible !important; }
+  #print-root {
+    position: static !important; display: block !important;
+    inset: auto !important; width: auto !important; height: auto !important;
+  }
+  #print-preview, #print-preview-bar { position: static !important; background: #fff !important; padding: 0 !important; }
+  #print-preview .paper { box-shadow: none !important; padding: 0 !important; max-width: none !important; }
+  #print-preview-bar { display: none !important; }
+
+  /* nothing of the app itself reaches paper */
+  #topbar, #bottomnav, #plan-tray, #stage, #toast, .map-controls, .side-list, #drawer { display: none !important; }
+
+  .p-doc { font-size: 11pt; }
+  .p-sheet { max-width: none; margin: 0; padding: 0; break-after: page; page-break-after: always; }
+  .p-sheet:last-child { break-after: auto; page-break-after: auto; }
+  .p-sheet + .p-sheet { border-top: 0; padding-top: 0; }
+
+  /* keep a heading with what follows it; keep a row intact; let a long step split */
+  .p-h2, .p-h3 { break-after: avoid; page-break-after: avoid; }
+  .p-ing { break-inside: avoid; page-break-inside: avoid; }
+  .p-head { break-inside: avoid; page-break-inside: avoid; }
+  .p-steps li { break-inside: auto; page-break-inside: auto; orphans: 2; widows: 2; }
+  .p-foot { break-inside: avoid; }
+  a[href]::after { content: ""; }
+}
+
+@media print and (min-width: 0) {
+  /* A4 users get the same template; margins come from @page. */
+}
+/* V03: a closed preview must not print its retained detached document. */
+@media print { #print-root[hidden] { display: none !important; } }

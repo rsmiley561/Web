@@ -1,0 +1,39 @@
+{
+ "searches": {
+  "garlic": 27,
+  "basil": 12,
+  "onion": 36,
+  "lemon": 34,
+  "pork": 52,
+  "tomato": 39,
+  "butter": 47,
+  "thyme": 8
+ },
+ "rest_view_total": 2019,
+ "rest_view_vfb": 26,
+ "partners": {
+  "garlic": 29,
+  "basil": 16
+ },
+ "relationships": {
+  "pairs": 30,
+  "scored": 30,
+  "not_established": 0,
+  "evidence": 30
+ },
+ "recipes": {
+  "total": 41,
+  "pages": 2,
+  "collected": 41,
+  "page_sizes": [
+   24,
+   17
+  ]
+ },
+ "recipe_details": 41,
+ "bienville": {
+  "recipe_id": "chef-paul-prudhommes-louisiana-kitchen-p241-bienville-stuffing",
+  "title": "Bienville Stuffing",
+  "work_url": "/host/app/index.html?recipe=chef-paul-prudhommes-louisiana-kitchen-p241-bienville-stuffing"
+ }
+}

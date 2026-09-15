@@ -1,0 +1,149 @@
+{
+  "status": "PASS",
+  "facts": [
+    {
+      "check": "Rest drift and independent field time",
+      "status": "PASS",
+      "displacement_px": [
+        2.3708552035997457,
+        6.1485951682442455,
+        6.353215426269632,
+        7.972480137677434,
+        6.832480821013903,
+        7.68550734188668,
+        7.363334416028671
+      ]
+    },
+    {
+      "check": "Gather, separate and drag preserve complete neighborhood and do not activate relationship",
+      "status": "PASS"
+    },
+    {
+      "check": "Complete iPad-size motion journey; paused field; exact work return",
+      "status": "PASS",
+      "metrics": {
+        "frames": 453,
+        "elapsed_ms": 84502,
+        "fps": 6,
+        "frame_ms_p95": 200.09999999999854,
+        "zoom": 0.9999999999999999,
+        "targetZoom": 1,
+        "cinema": 1,
+        "gathered": false,
+        "rotation": 0,
+        "attention": 1.4157834496229224e-66,
+        "wakeEnergy": 0.1259802664213199,
+        "time": 22.39990000000018,
+        "quality": 0.65,
+        "qualityChanges": [
+          {
+            "at": 1.2000000000000004,
+            "quality": 0.65,
+            "reason": "frame budget"
+          }
+        ],
+        "assetReady": true,
+        "renderer": "WebGL shared cloud material and GPU grains",
+        "physical_hardware": false,
+        "semantic": false,
+        "counts": {
+          "particles": 2800,
+          "cloudDepths": 3,
+          "maxCondensations": 12,
+          "drawCalls": 2
+        },
+        "atoms": {
+          "frames": 565,
+          "time": 22.39990000000018,
+          "bodyCount": 1,
+          "bodies": [
+            {
+              "id": "recipe:chef-paul-prudhommes-louisiana-kitchen-p241-bienville-stuffing",
+              "x": -2.7620304215668465,
+              "y": 5.844253967239615
+            }
+          ],
+          "connectionCount": 0,
+          "motionMeaning": "navigation only",
+          "representation": "porous GPU cloud condensations; shared material",
+          "dragging": false
+        }
+      }
+    },
+    {
+      "check": "Reduced motion freezes convection and drift while partner exploration remains available",
+      "status": "PASS"
+    }
+  ],
+  "chapters": [
+    {
+      "name": "01-rest",
+      "seconds": 3
+    },
+    {
+      "name": "02-search-wake",
+      "seconds": 17.4
+    },
+    {
+      "name": "03-search-condensation",
+      "seconds": 22.1
+    },
+    {
+      "name": "04-ingredient-focus-loading",
+      "seconds": 26.4
+    },
+    {
+      "name": "05-partner-field",
+      "seconds": 30.2
+    },
+    {
+      "name": "06-gather",
+      "seconds": 34.8
+    },
+    {
+      "name": "07-separate",
+      "seconds": 39.3
+    },
+    {
+      "name": "08-drag-wake",
+      "seconds": 50.6
+    },
+    {
+      "name": "09-paused",
+      "seconds": 55.4
+    },
+    {
+      "name": "10-relationship",
+      "seconds": 59.1
+    },
+    {
+      "name": "11-evidence-folio",
+      "seconds": 63.7
+    },
+    {
+      "name": "12-recipe-condensation",
+      "seconds": 66.6
+    },
+    {
+      "name": "13-recipe-folios",
+      "seconds": 69.4
+    },
+    {
+      "name": "14-recipe-focus",
+      "seconds": 74.5
+    },
+    {
+      "name": "15-work-mode",
+      "seconds": 78.6
+    },
+    {
+      "name": "16-return-to-brain",
+      "seconds": 79.8
+    }
+  ],
+  "video": "NOT_RECORDED_IN_THIS_RUN",
+  "environment": "Desktop Chromium headless against the STATIC look-lab build (no server)",
+  "physical_iPad": "NOT_RUN",
+  "physical_iPhone": "NOT_RUN",
+  "VoiceOver": "NOT_RUN"
+}

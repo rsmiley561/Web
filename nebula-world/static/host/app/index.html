@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smiley — recipes, plans and printing (V04 Culinary OS)</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="os.css">
+<link rel="stylesheet" href="print.css">
+</head>
+<body>
+<div id="app" aria-busy="true">
+
+  <header id="topbar">
+    <button type="button" id="brand" class="brand" aria-label="Home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">smiley<span class="brand-os"> / OS</span></span>
+    </button>
+
+    <div class="search-wrap">
+      <input id="search-input" type="search" autocomplete="off" role="combobox"
+             aria-expanded="false" aria-controls="search-results" aria-autocomplete="list"
+             placeholder="Search recipes, books, ingredients…"
+             aria-label="Search recipes. Press Enter to see all results; use the arrow keys to pick one suggestion.">
+      <div id="search-results" class="search-results" role="listbox" aria-label="Search suggestions" hidden></div>
+    </div>
+
+    <nav id="topnav" aria-label="Main views">
+      <button type="button" class="navbtn" data-route="home" aria-pressed="true">Home</button>
+      <button type="button" class="navbtn" data-route="library" aria-pressed="false">Library</button>
+      <button type="button" class="navbtn" data-route="plan" aria-pressed="false">Plan <span id="nav-plan-count" class="count" hidden>0</span></button>
+    </nav>
+
+    <button id="motion-toggle" class="ghost" type="button" aria-pressed="false">Motion: on</button>
+    <details class="build-info"><summary>About</summary><div><b>V04 · local Culinary OS</b><p>Recorded partial costs. This session only.</p><span id="generation-badge" class="badge">loading…</span></div></details>
+  </header>
+
+  <main id="stage">
+
+    <!-- ============================ HOME ============================ -->
+    <section id="view-home" class="view scroll" aria-label="Home">
+      <div class="home-wrap">
+        <div class="home-editorial">
+          <div class="home-copy">
+            <p class="eyebrow"><span class="live-dot"></span> Culinary operating system / 04</p>
+            <h1 class="home-title">A new dimension<br>of <em>cooking.</em></h1>
+            <p class="home-sub">Move through recipes. Follow their connections. <br>Bring the possibilities back to your kitchen.</p>
+            <div class="home-actions">
+              <button type="button" id="home-search" class="primary">Find a recipe <span aria-hidden="true">↗</span></button>
+              <button type="button" id="home-browse" class="secondary">Browse library</button>
+              <button type="button" id="home-plan" class="secondary" hidden>Continue plan</button>
+              <button type="button" id="home-resume" class="secondary" hidden>Return to last recipe</button>
+            </div>
+            <p id="home-counts" class="section-note"></p>
+          </div>
+          <div class="home-object">
+            <div class="field-topline"><span>DISCOVERY FIELD</span><span>DRAG / MOVE / SELECT</span></div>
+            <div id="home-art" aria-hidden="true"></div>
+            <div class="field-caption"><div><p id="field-info">Start with a little curiosity.</p><span id="field-source">Abstract material study · no data relationships shown</span></div><span class="field-cross" aria-hidden="true">↗</span></div>
+          </div>
+          <div class="field-dock"><div class="dock-heading"><span class="eyebrow">Focus an object</span><span class="muted">Three entry points into the collection</span></div><div id="field-select"></div><div id="field-actions" hidden><button class="primary" id="field-preview" type="button">Quick look</button><button class="secondary" id="field-explore" type="button">Explore source connections ↗</button></div></div>
+        </div>
+        <div class="collection-heading"><div><p class="eyebrow">01 / Selected from the collection</p><h2>Objects of curiosity</h2></div><button type="button" class="ghost" id="home-browse-2">View all recipes ↗</button></div>
+        <div id="home-cards" class="home-cards"></div>
+        <div class="connection-entry"><div><p class="eyebrow">Follow the source</p><h2>Follow the connections.</h2><p>Explore listed ingredients and shared books. Provenance, without ratings or implied flavor affinity.</p></div><button type="button" class="secondary" id="home-map">Explore connections ↗</button></div>
+        <p class="home-foot">From discovery to the stove. Original or scaled ingredients. Complete source methods. Clean printing.</p>
+      </div>
+    </section>
+
+    <!-- ============================ LIBRARY ============================ -->
+    <section id="view-library" class="view scroll" hidden aria-label="Library">
+      <div class="lib-wrap">
+        <div class="lib-head">
+          <h1 id="lib-title">Library</h1>
+          <p id="lib-count" class="section-note" aria-live="polite"></p>
+
+          <div class="lib-controls">
+            <label>Cuisine <select id="f-cuisine"><option value="">Any cuisine</option></select></label>
+            <label>Course <select id="f-course"><option value="">Any course</option></select></label>
+            <label>Book <select id="f-book"><option value="">Any book</option></select></label>
+            <label>Sort <select id="f-sort">
+              <option value="title">Title A–Z</option>
+              <option value="title-desc">Title Z–A</option>
+              <option value="book">Book, then title</option>
+            </select></label>
+            <button type="button" id="f-clear" class="ghost">Clear filters</button>
+          </div>
+
+          <div class="lib-ing">
+            <label>Include ingredient
+              <input id="f-include" type="text" list="ingredient-list" placeholder="e.g. lemon-juice">
+            </label>
+            <label>Exclude ingredient
+              <input id="f-exclude" type="text" list="ingredient-list" placeholder="e.g. shellfish">
+            </label>
+            <datalist id="ingredient-list"></datalist>
+            <div id="f-chips" class="chips"></div>
+          </div>
+          <details class="filter-help"><summary>What ingredient filters mean</summary><p class="section-note tiny">Ingredient filters match listed source ingredient entries by id. That is list
+            membership only — not an allergy, cross-contact, vegan or other dietary certification. Where a recipe
+            states alternatives, every stated option counts as listed; a listed option is not automatically required.</p></details>
+        </div>
+
+        <div id="lib-grid" class="library-grid"></div>
+
+        <div class="pager">
+          <button type="button" id="page-prev" class="ghost">‹ Previous</button>
+          <span id="page-label" class="muted small"></span>
+          <button type="button" id="page-next" class="ghost">Next ›</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ RECIPE (full page) ============================ -->
+    <section id="view-recipe" class="view scroll" hidden aria-label="Recipe">
+      <div id="recipe-wrap" class="recipe-wrap"></div>
+    </section>
+
+    <!-- ============================ PLAN ============================ -->
+    <section id="view-plan" class="view scroll" hidden aria-label="Plan">
+      <div id="plan-body" class="plan-wrap"></div>
+    </section>
+
+    <!-- ============================ MAP ============================ -->
+    <section id="view-map" class="view" hidden aria-label="Connections map">
+      <div id="map-shell">
+        <svg id="sky" role="img" aria-label="Recipe and ingredient connections"></svg>
+        <div id="map-controls" class="map-controls">
+          <button type="button" id="btn-back-map" class="ghost">‹ Back</button>
+          <button type="button" id="btn-reset" class="ghost">Reset view</button>
+          <button type="button" id="btn-zoom-in" class="ghost" aria-label="Zoom in">+</button>
+          <button type="button" id="btn-zoom-out" class="ghost" aria-label="Zoom out">−</button>
+          <button type="button" id="btn-list" class="ghost">List these items</button>
+          <label class="switch"><input type="checkbox" id="toggle-pantry" checked><span>Hide common pantry links</span></label>
+          <label class="switch"><input type="checkbox" id="toggle-book"><span>Show same-book links</span></label>
+        </div>
+        <div id="focus-label" class="focus-label" aria-live="polite"></div>
+        <div id="map-empty" class="map-empty" hidden></div>
+      </div>
+      <aside id="neighborhood-list" class="side-list" aria-label="List of the items on the map">
+        <h2>On the map <span class="muted small" id="nlist-count"></span></h2>
+        <div id="nlist-body"></div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- ============================ QUICK LOOK ============================ -->
+  <aside id="drawer" class="drawer" hidden aria-label="Quick look">
+    <div class="sheet-grip" aria-hidden="true"></div>
+    <button type="button" id="drawer-close" class="drawer-close" aria-label="Close quick look">✕</button>
+    <div id="drawer-body"></div>
+  </aside>
+
+  <div id="plan-tray" class="plan-tray" hidden>
+    <span class="tray-label">Plan <span class="muted small">(this session)</span></span>
+    <div id="tray-chips" class="tray-chips"></div>
+    <button type="button" id="tray-print" class="secondary small">Print recipes</button>
+    <button type="button" id="tray-open" class="primary small">Open plan</button>
+  </div>
+
+  <nav id="bottomnav" aria-label="Main views (mobile)">
+    <button type="button" data-route="home" class="navbtn" aria-pressed="true"><span class="ico" aria-hidden="true">⌂</span>Home</button>
+    <button type="button" id="mobile-search" class="navbtn"><span class="ico" aria-hidden="true">⌕</span>Search</button>
+    <button type="button" data-route="library" class="navbtn"><span class="ico" aria-hidden="true">▤</span>Library</button>
+    <button type="button" data-route="plan" class="navbtn"><span class="ico" aria-hidden="true">▣</span>Plan<span id="bottom-plan-count" class="count" hidden>0</span></button>
+  </nav>
+
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+</div>
+
+<!-- The print document is built here and is the only thing that reaches paper. -->
+<div id="print-root" hidden></div>
+
+<script src="../reference/ui/vendor/quantity-engine.js"></script>
+<script src="../reference/ui/vendor/corpus-adapter.js"></script>
+<script src="../reference/ui/vendor/s1-bundle.js"></script>
+<script src="source-yields.js"></script>
+<script src="yield-display.js"></script>
+<script src="field.js"></script>
+<script src="art.js"></script>
+<script src="presenter.js"></script>
+<script src="data.js"></script>
+<script src="constellation.js"></script>
+<script src="print.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>

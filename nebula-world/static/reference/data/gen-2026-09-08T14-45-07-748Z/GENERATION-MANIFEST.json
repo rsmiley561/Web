@@ -1,0 +1,414 @@
+{
+  "schema_version": "s1-generation-1",
+  "generation_id": "gen-2026-09-08T14-45-07-748Z",
+  "generated_at_utc": "2026-09-08T14:45:08.953Z",
+  "generated_by": "WORK/preview/lib/generation.js",
+  "prepared_without_ai": true,
+  "network_calls": 0,
+  "production_approved": false,
+  "dependencies": {
+    "recipe_runtime": {
+      "sha256": "fab9a2977a05f260a1891976ea34b6e14b20568f8a2e90f8a85be0a520e837d7",
+      "recipes": 1497
+    },
+    "rule_registry": {
+      "sha256": "0559dabfed312b17108b0bfa8298cfd7df7cb5a7add3c90d2ee269f7fe70ddb0",
+      "rules": 712,
+      "profiles": 561,
+      "production_approved": false
+    },
+    "accepted_bindings": {
+      "sha256": "269d4617bbc1d925faba4fbaebf628af0102b9d5a006b52e797660a1d45e8d0c",
+      "bindings": 63,
+      "owner_defaults": {
+        "salt_brand": null,
+        "flour_measuring_method": null,
+        "source_conflict_policy": null,
+        "location_price": null
+      }
+    },
+    "binding_overlay": {
+      "sha256": "658b17e20b5311e39da970cf01ac19070a7d1d3aa8628187906286191ada2fa4",
+      "version": "v1",
+      "entries": [
+        "OV-001:BIND-011-OV1",
+        "OV-002:BIND-CLOVE-WHOLE-OV1",
+        "OV-003:BIND-BASIL-FRESH-LOOSE-OV1",
+        "OV-004:BIND-PEPPER-UNSTATED-FORM-OV1"
+      ],
+      "bindings_after_overlay": 67
+    },
+    "purchasing_profile": {
+      "id": "retail-walmart-33445-recorded",
+      "definition": {
+        "id": "retail-walmart-33445-recorded",
+        "label": "Retail — recorded Walmart 33445 observations",
+        "kind": "retail",
+        "price_source": "frozen-walmart-33445-observations",
+        "price_label": "recorded_price_estimate",
+        "cross_system_unit_bridge": "QE-MATH-UNIT-MASS",
+        "note": "Historical recorded observations, admission-gated. Opening or recalculating never refreshes them."
+      }
+    },
+    "price_observations": {
+      "sha256": "a3411216c21a1cbe43cc9aa9ce0f2fa6876d06ebe002442b78b70dd71229ba1c",
+      "records": 1213
+    },
+    "price_admission_ledger": {
+      "sha256": "10ff254f09bbae6ca2e0a6835fdfbe112c70a13d71833b21343096c53690efe4",
+      "summary": {
+        "total": 1213,
+        "by_status": {
+          "HELD_UPSTREAM": 409,
+          "STAGED_RECORDED_PRICE_ADMISSIBLE": 746,
+          "NO_SUPPORTED_PURCHASE_QUANTITY": 58
+        },
+        "by_receiving_state": {
+          "QUARANTINED_FROM_AUTOMATIC_USE": 409,
+          "CANDIDATE_FOR_APPLICABILITY_REVIEW": 804
+        },
+        "terminal_disposition_for_every_record": true,
+        "staged_admissible": 746,
+        "held_upstream": 409
+      }
+    },
+    "inventory_scenario": "UNKNOWN",
+    "evaluator": {
+      "quantity_engine": "1.2.0-development-candidate",
+      "quantity_engine_sha256": "2fd5428c11d70f16565b4447de4f9e99b3d04f38dba6fd1642489b77c7b3643c",
+      "corpus_adapter_sha256": "4f954f213aaf872cda554274887fb841803656b9d9f7e8283c085ed39756579b",
+      "s1_preview_api": "s1-preview-1.0.0"
+    }
+  },
+  "denominators": {
+    "recipes": 1497,
+    "direct_ingredient_rows": 15523,
+    "alternative_members": 181,
+    "component_references": 436,
+    "frozen_price_records": 1213
+  },
+  "coverage": {
+    "quantity_supported_rows": 4941,
+    "unresolved_rows": 10582,
+    "purchase_lines": 4671,
+    "priced_purchase_lines": 1517,
+    "recipes_complete_for_baseline_scenario": 1,
+    "distinct_rules_used": 31,
+    "distinct_offers_used": 64
+  },
+  "membership_checks": {
+    "passed": true,
+    "checks": [
+      {
+        "check": "every_recipe_prepared_once",
+        "passed": true,
+        "expected": 1497,
+        "actual": 1497
+      },
+      {
+        "check": "every_direct_row_has_a_disposition",
+        "passed": true,
+        "expected": 15523,
+        "actual": 15523
+      },
+      {
+        "check": "every_referenced_rule_exists_in_the_registry",
+        "passed": true,
+        "unknown": []
+      },
+      {
+        "check": "no_unadmitted_observation_reached_a_priced_line",
+        "passed": true,
+        "offending": []
+      },
+      {
+        "check": "shard_files_written",
+        "passed": true,
+        "shards": 48
+      }
+    ]
+  },
+  "shards": 48,
+  "files": [
+    {
+      "path": "admission-ledger.json",
+      "bytes": 5088856,
+      "sha256": "6eefd10a393341c007bc2ee5098928ac14cec7c3ad8b5d2950bf1cfceb3e2c51"
+    },
+    {
+      "path": "binding-overlay.json",
+      "bytes": 11558,
+      "sha256": "658b17e20b5311e39da970cf01ac19070a7d1d3aa8628187906286191ada2fa4"
+    },
+    {
+      "path": "index.json",
+      "bytes": 1241539,
+      "sha256": "149c6d1ba58c54697fa8700de879ec1be0f9e253217d1428044d980998489941"
+    },
+    {
+      "path": "occurrence-bindings.accepted.json",
+      "bytes": 33688,
+      "sha256": "269d4617bbc1d925faba4fbaebf628af0102b9d5a006b52e797660a1d45e8d0c"
+    },
+    {
+      "path": "occurrence-bindings.json",
+      "bytes": 25076,
+      "sha256": "3f056006e7a227392c2a94ec27b1264bd96d11ffff63b9d0b32478b8a983a94e"
+    },
+    {
+      "path": "offers.json",
+      "bytes": 1878774,
+      "sha256": "774ad87195fe7197fb3e497a83a9892b3f01c9ca8035919381b2b9b1da301f8f"
+    },
+    {
+      "path": "reviewed-rules.json",
+      "bytes": 2539444,
+      "sha256": "0559dabfed312b17108b0bfa8298cfd7df7cb5a7add3c90d2ee269f7fe70ddb0"
+    },
+    {
+      "path": "rules.json",
+      "bytes": 871270,
+      "sha256": "c93eaa59f979b122577c618b7c1a31c78c038decef661b5e2f0b328a4e3298d5"
+    },
+    {
+      "path": "shards/00.json",
+      "bytes": 1206726,
+      "sha256": "5c6279b68d89c52c033155877111a3c9b7f1e4481f9b8ba9390a2c55757d875e"
+    },
+    {
+      "path": "shards/01.json",
+      "bytes": 971330,
+      "sha256": "70c07931cdb425d73db294841c7ee356aa3dbdaa81d18789428718190ee7df47"
+    },
+    {
+      "path": "shards/02.json",
+      "bytes": 1107237,
+      "sha256": "563349887791f15f6469a8104b4a6cfc425d8e54a864436587a94e744295fbfe"
+    },
+    {
+      "path": "shards/03.json",
+      "bytes": 1301406,
+      "sha256": "7c2f207d8d7e5c1351d4599b2d0022671deb2895f6f81945c7686301222a7c7a"
+    },
+    {
+      "path": "shards/04.json",
+      "bytes": 1069794,
+      "sha256": "511267f47763c9acd1bf884b6272c55e4ebf2b2e1f8e5f34fe91101f1cc56241"
+    },
+    {
+      "path": "shards/05.json",
+      "bytes": 1239199,
+      "sha256": "5ecdee3c856a2eb8ff5ea855a30cf52bf5dce9047d1565c5489993a49ee71d57"
+    },
+    {
+      "path": "shards/06.json",
+      "bytes": 866258,
+      "sha256": "9f16623e10c0b20156697472a35436ba394aa708ecc4e00e6307b4ff001338c4"
+    },
+    {
+      "path": "shards/07.json",
+      "bytes": 1220371,
+      "sha256": "0621a4a4d1d7e14134e5670024577f15b2416c3bc2009b57902aa2554a03bc07"
+    },
+    {
+      "path": "shards/08.json",
+      "bytes": 1078607,
+      "sha256": "b92d47d2211e11bf3407b0288135696756178649f655be990cc862a85ccdef02"
+    },
+    {
+      "path": "shards/09.json",
+      "bytes": 1151873,
+      "sha256": "d2376688d45cf8a961658112574ea859674dfb9c529ee6f8f62074ae6d7bb748"
+    },
+    {
+      "path": "shards/10.json",
+      "bytes": 974347,
+      "sha256": "175c24494187b5281ffd015155b2fbb1e39213fc1061675e1344c07caded205f"
+    },
+    {
+      "path": "shards/11.json",
+      "bytes": 1163259,
+      "sha256": "4afcff06a7429c786ed16dc8344f6f2b16c8148f3e37984f22b9e2ff5cd967d9"
+    },
+    {
+      "path": "shards/12.json",
+      "bytes": 818044,
+      "sha256": "24a6eda342558326055a633bab206d2e9eb884d7c69256ac2c926bdd7d174444"
+    },
+    {
+      "path": "shards/13.json",
+      "bytes": 1123132,
+      "sha256": "23a692103dd51b4fc98776e01cfe4ff9e4a8c5869ea5cb0a228f7c9234e4c1b5"
+    },
+    {
+      "path": "shards/14.json",
+      "bytes": 1267547,
+      "sha256": "9e27b0b25d263eff68a8093ac2c1702ccc30798ec37cbc3ea0eef5806e49c735"
+    },
+    {
+      "path": "shards/15.json",
+      "bytes": 1006439,
+      "sha256": "f0ddd922f885d0e9de8e7767cfcfd2d04f6327624f75aaa56ca2f49d5b5f0402"
+    },
+    {
+      "path": "shards/16.json",
+      "bytes": 1324488,
+      "sha256": "9b36bcbaa029a6f2779ef423378ecf3f892cf8fd974962ed01ba0be6a25d5b7a"
+    },
+    {
+      "path": "shards/17.json",
+      "bytes": 738539,
+      "sha256": "7ac534048ef0acded0230e4e89fdb822a7fc5f5638eb683b58fabd29a3a534d2"
+    },
+    {
+      "path": "shards/18.json",
+      "bytes": 646053,
+      "sha256": "4f38f11eedc506fb26f06e3dc17887236101a6b00d3782e02f285f249afa1ab5"
+    },
+    {
+      "path": "shards/19.json",
+      "bytes": 574632,
+      "sha256": "41f5c7fbd32a4a0c3df40f0bfa66a9038d97e0d95de2d518d2a901f92b78b3ae"
+    },
+    {
+      "path": "shards/20.json",
+      "bytes": 946961,
+      "sha256": "0d22e77e1a59f23e90726fcc5562bae93324ecb3770645b3af5ed1ec4fdebf4f"
+    },
+    {
+      "path": "shards/21.json",
+      "bytes": 753606,
+      "sha256": "5da7c137a49452757e1e5bec6bf4a74a900b5a873ba689de6212e6cdc74019c9"
+    },
+    {
+      "path": "shards/22.json",
+      "bytes": 926213,
+      "sha256": "fe0a750a2c604dcfb9ebbaebd9d1cf142279ae92e4c7e7a03add8fe3500df7f6"
+    },
+    {
+      "path": "shards/23.json",
+      "bytes": 970167,
+      "sha256": "a3be223f5237f63f2550c520b3b061f8eb6279c81c2c09da528d50b2f44e044d"
+    },
+    {
+      "path": "shards/24.json",
+      "bytes": 523338,
+      "sha256": "286f1238764cb15486c9443004fbb73b56311ef1ffee99b89c31e9d6d64e56fd"
+    },
+    {
+      "path": "shards/25.json",
+      "bytes": 1056806,
+      "sha256": "014e4f44f592e446cbac79a8e9a3ed77a6ed5b819c9acc4b8ba2a5c36553b1ed"
+    },
+    {
+      "path": "shards/26.json",
+      "bytes": 1574200,
+      "sha256": "4853e26f0b51d920959cb2a4875209b612ed12922c71876db9325a11d5755566"
+    },
+    {
+      "path": "shards/27.json",
+      "bytes": 943812,
+      "sha256": "2f04ce2b968c3a4f9b0dfc9ffa9d9cbcccd17fcc692b7a4baf0d3489334744ae"
+    },
+    {
+      "path": "shards/28.json",
+      "bytes": 1148417,
+      "sha256": "9b6e3022585d3dcee6272e2d3a6584470777bb56e81ec5cdeb506168ccaf38ab"
+    },
+    {
+      "path": "shards/29.json",
+      "bytes": 830735,
+      "sha256": "cc0513135f129742eb805dad5f2f6ec341f7f730b195855fdb177273fa24de61"
+    },
+    {
+      "path": "shards/30.json",
+      "bytes": 1086807,
+      "sha256": "9f5b3bf3f996f3c2b2132ae8074f335a1854967b1651c50dd89ae69f7df9fcae"
+    },
+    {
+      "path": "shards/31.json",
+      "bytes": 676195,
+      "sha256": "845738dedfff190cb5d5faa7f1b11719ae875cb5bb58ec27892dee6cf8db82a9"
+    },
+    {
+      "path": "shards/32.json",
+      "bytes": 783536,
+      "sha256": "b88931a1722fb18f06be8bdc184b6d220af7b62e7dc7b3bf0b66c870c4c8768e"
+    },
+    {
+      "path": "shards/33.json",
+      "bytes": 1130693,
+      "sha256": "b5e24d82c1f60d7b87a55b3f6f51b08a04d270680ceb44442d0758c8f24383af"
+    },
+    {
+      "path": "shards/34.json",
+      "bytes": 629309,
+      "sha256": "2ab6125a4902edb960b44e17d097af6a2ba50481d309f7a0a70327b16186be56"
+    },
+    {
+      "path": "shards/35.json",
+      "bytes": 902172,
+      "sha256": "a9b06b7100a941a98757afed08cc41fb2d32ff832e93ca0dda53a2ec2309fdfc"
+    },
+    {
+      "path": "shards/36.json",
+      "bytes": 839014,
+      "sha256": "51f31786415bc82bbea6b55408325c445dcf95d05b01d655431f100fc877ad80"
+    },
+    {
+      "path": "shards/37.json",
+      "bytes": 939566,
+      "sha256": "bf74e599abd36913b3910d81f194acfbff6877129623167940bb25c79476e008"
+    },
+    {
+      "path": "shards/38.json",
+      "bytes": 843436,
+      "sha256": "b3c2a83194a6f440b9241e12b41b0a34df2e79149e436ae7a040b879544ae66a"
+    },
+    {
+      "path": "shards/39.json",
+      "bytes": 668057,
+      "sha256": "19a91a588aa04104a8858055af8e508d792330c4a401340f6a5b5cd503701d5e"
+    },
+    {
+      "path": "shards/40.json",
+      "bytes": 1068702,
+      "sha256": "55e9dc4ecd592efe583f856092bcaa228b52acd7e8d68b3668ce69bc3096bad3"
+    },
+    {
+      "path": "shards/41.json",
+      "bytes": 860889,
+      "sha256": "33363c7fa9dc1be995594d41ac5f92dd33d8ec217559656a2fe7826d55c5cc2f"
+    },
+    {
+      "path": "shards/42.json",
+      "bytes": 1053403,
+      "sha256": "2dc0d4a5b7e63595f9c7ab82ef2ce306df950dde8448793126a01890110ebe6d"
+    },
+    {
+      "path": "shards/43.json",
+      "bytes": 718480,
+      "sha256": "e9a0af6f86db9b6237ef842fd84eb331969fd0865f6d6e86a1c9584fc8ad2439"
+    },
+    {
+      "path": "shards/44.json",
+      "bytes": 737819,
+      "sha256": "c10184a16fe089a66e8ea727f38cd0c3e7a6470154b5e57c957420cca524d5ca"
+    },
+    {
+      "path": "shards/45.json",
+      "bytes": 480514,
+      "sha256": "d56a7ee4b7b7a9f80f8f0caee7b6e8e8c32f306b8ceefe50dfcfc990d7ff6760"
+    },
+    {
+      "path": "shards/46.json",
+      "bytes": 762798,
+      "sha256": "2498559c9bc1f5e00f3675d6f609b8c716ea543d7c33e368b51134ce944e6c18"
+    },
+    {
+      "path": "shards/47.json",
+      "bytes": 780286,
+      "sha256": "681a907e1d7711c2434a0b3bd0577ee55c34a4885f69a04abd897b24f45bf185"
+    }
+  ]
+}
