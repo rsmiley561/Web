@@ -52,17 +52,21 @@ float sdCapsule(vec3 p, vec3 a, vec3 b, float r){ vec3 pa = p - a, ba = b - a; f
 // carved around the light so there is somewhere to arrive.
 float cloud(vec3 p){
   vec3 q = p * uScale + vec3(0.013, 0.007, 0.011) * uTime * uDrift;
-  vec4 n = texture(uNoise, q);
-  float shape = n.r - uCarve * n.g;
+  // low-frequency domain warp breaks the tile repetition into organic folds
+  vec3 warp = (texture(uNoise, q * 0.31 + vec3(0.71, 0.13, 0.42)).rgb - 0.5) * 0.28;
+  vec4 n = texture(uNoise, q + warp);
+  float F = clamp((n.r - 0.5) * 3.0 + 0.5, 0.0, 1.0);                 // fBm with real dynamic range
+  float W = 1.0 - clamp((1.0 - n.g / 1.15 - 0.05) / 0.8, 0.0, 1.0);    // cavity: 1 at Worley feature points
+  float shape = F - uCarve * W - uThreshold;
   float detail = texture(uNoise, q * 2.7 + vec3(0.31, 0.17, 0.53)).b;
   shape += (detail - 0.5) * uDetail;
   float dl = length(p - uLightPos);
-  shape -= uPocket * exp(-dl*dl / 900.0);
-  return clamp((shape - uThreshold) * 6.0, 0.0, 1.0) * uDensity;
+  shape -= uPocket * exp(-dl*dl / 2000.0);                             // the pocket you arrive in
+  return smoothstep(0.02, 0.24, shape) * uDensity;                     // cavities empty, walls dense
 }
 // One dark, fibrous tangle just in front of the light: absorbing only, never emitting.
 float tangle(vec3 p){
-  vec3 c = p - (uLightPos + vec3(0.0, -2.0, 14.0));
+  vec3 c = p - (uLightPos + vec3(0.0, -1.0, 12.0));
   if (dot(c, c) > 900.0) return 0.0;
   vec3 warp = (texture(uNoise, c * 0.03 + vec3(0.5)).rgb - 0.5) * 7.0;
   vec3 q = c + warp;
@@ -85,7 +89,7 @@ void main(){
   float t = 0.6 + 0.5 * fract(sin(dot(vUv, vec2(12.9898, 78.233))) * 43758.5453);   // jitter hides banding
   for (int i = 0; i < 96; i++) {
     if (i >= uSteps || t > uFar) break;
-    float dt = max(0.9, t * 0.045);
+    float dt = max(1.4, t * 0.06);
     vec3 p = ro + rd * t;
     float dc = cloud(p), dk = tangle(p), d = dc + dk;
     if (d > 0.002) {
@@ -123,8 +127,8 @@ void main(){
 
 // ---------- tunables (persisted in the URL hash so the owner can send back what looked right) ----
 const P = {
-  density: 1.35, carve: 0.95, threshold: 0.30, detail: 0.35, absorb: 0.9, scale: 0.0115, drift: 0.6,
-  lightI: 26, falloff: 0.0009, g1: 0.62, g2: -0.28, gmix: 0.45, pocket: 0.9, tangle: 6.0, far: 240, steps: 48, exposure: 1.15,
+  density: 1.0, carve: 1.2, threshold: 0.15, detail: 0.3, absorb: 0.75, scale: 0.0065, drift: 0.5,
+  lightI: 30, falloff: 0.0008, g1: 0.62, g2: -0.28, gmix: 0.45, pocket: 1.8, tangle: 6.0, far: 280, steps: 48, exposure: 1.15,
   scale2: 0.5,          // render scale (fraction of framebuffer)
 };
 const hashParams = new URLSearchParams(location.hash.slice(1)); for (const k of Object.keys(P)) if (hashParams.has(k)) P[k] = Number(hashParams.get(k));
@@ -143,7 +147,7 @@ const quad = new THREE.PlaneGeometry(2, 2), ortho = new THREE.OrthographicCamera
 const march = new THREE.ShaderMaterial({glslVersion: THREE.GLSL3, vertexShader: VERT, fragmentShader: MARCH, depthTest: false, depthWrite: false, uniforms: {
   uNoise: {value: noise}, uTime: {value: 0}, uCamPos: {value: new THREE.Vector3()}, uCamFwd: {value: new THREE.Vector3()}, uCamRight: {value: new THREE.Vector3()}, uCamUp: {value: new THREE.Vector3()},
   uTanHalfFov: {value: Math.tan(THREE.MathUtils.degToRad(cam.fov / 2))}, uAspect: {value: 1},
-  uLightPos: {value: new THREE.Vector3(0, 6, -70)}, uLightColor: {value: new THREE.Color(1.0, 0.93, 0.78)}, uAmbient: {value: new THREE.Color(0.012, 0.030, 0.024)}, uBg: {value: new THREE.Color(0.006, 0.018, 0.015)},
+  uLightPos: {value: new THREE.Vector3(0, 4, -52)}, uLightColor: {value: new THREE.Color(1.0, 0.93, 0.78)}, uAmbient: {value: new THREE.Color(0.012, 0.030, 0.024)}, uBg: {value: new THREE.Color(0.006, 0.018, 0.015)},
   uScale: {value: P.scale}, uDensity: {value: P.density}, uCarve: {value: P.carve}, uThreshold: {value: P.threshold}, uDetail: {value: P.detail}, uAbsorb: {value: P.absorb}, uLightI: {value: P.lightI}, uFalloff: {value: P.falloff},
   uG1: {value: P.g1}, uG2: {value: P.g2}, uGmix: {value: P.gmix}, uDrift: {value: P.drift}, uPocket: {value: P.pocket}, uTangle: {value: P.tangle}, uFar: {value: P.far}, uSteps: {value: P.steps},
 }});
@@ -160,7 +164,7 @@ function resize() {
 addEventListener('resize', resize); resize();
 
 // ---------- inertial fly camera ------------------------------------------------------------------
-const fly = {yaw: 0, pitch: 0, vyaw: 0, vpitch: 0, vel: new THREE.Vector3(), pos: new THREE.Vector3(0, 2, 34), lastInput: performance.now(), auto: true};
+const fly = {yaw: 0, pitch: 0, vyaw: 0, vpitch: 0, vel: new THREE.Vector3(), pos: new THREE.Vector3(0, 2, -4), lastInput: performance.now(), auto: true};
 const el = renderer.domElement; let drag = null, pinch = null;
 const touched = () => { fly.lastInput = performance.now(); };
 el.addEventListener('pointerdown', e => { if (e.pointerType === 'touch') return; drag = {x: e.clientX, y: e.clientY}; touched(); });
@@ -210,8 +214,8 @@ function loop() {
 requestAnimationFrame(loop);
 
 // ---------- tuning panel ---------------------------------------------------------------------------
-const SLIDERS = [['density', 0.3, 3, 0.05], ['carve', 0, 1.6, 0.05], ['threshold', 0, 0.6, 0.01], ['detail', 0, 1, 0.05], ['absorb', 0.2, 2.5, 0.05], ['scale', 0.004, 0.03, 0.0005], ['drift', 0, 2, 0.1],
-  ['lightI', 2, 80, 1], ['falloff', 0.0001, 0.004, 0.0001], ['g1', 0, 0.9, 0.02], ['g2', -0.9, 0, 0.02], ['gmix', 0, 1, 0.05], ['pocket', 0, 2, 0.05], ['tangle', 0, 14, 0.5], ['steps', 24, 96, 4], ['exposure', 0.4, 2.5, 0.05]];
+const SLIDERS = [['density', 0.3, 3, 0.05], ['carve', 0, 2, 0.05], ['threshold', 0, 0.6, 0.01], ['detail', 0, 1, 0.05], ['absorb', 0.2, 2.5, 0.05], ['scale', 0.004, 0.03, 0.0005], ['drift', 0, 2, 0.1],
+  ['lightI', 2, 80, 1], ['falloff', 0.0001, 0.004, 0.0001], ['g1', 0, 0.9, 0.02], ['g2', -0.9, 0, 0.02], ['gmix', 0, 1, 0.05], ['pocket', 0, 3, 0.05], ['tangle', 0, 14, 0.5], ['steps', 24, 96, 4], ['exposure', 0.4, 2.5, 0.05]];
 const U = {density: 'uDensity', carve: 'uCarve', threshold: 'uThreshold', detail: 'uDetail', absorb: 'uAbsorb', scale: 'uScale', drift: 'uDrift', lightI: 'uLightI', falloff: 'uFalloff', g1: 'uG1', g2: 'uG2', gmix: 'uGmix', pocket: 'uPocket', tangle: 'uTangle', steps: 'uSteps', far: 'uFar'};
 const panel = document.getElementById('tune');
 panel.innerHTML = SLIDERS.map(([k, a, b, s]) => `<label><span>${k}</span><input type="range" name="${k}" min="${a}" max="${b}" step="${s}" value="${P[k]}"><output>${P[k]}</output></label>`).join('') + `<button id="reset" type="button">Reset</button><button id="copy" type="button">Copy settings</button>`;
