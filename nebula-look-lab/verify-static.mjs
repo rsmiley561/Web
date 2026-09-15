@@ -8,7 +8,12 @@ fs.mkdirSync(out, {recursive: true});
 const results = [];
 const ok = (check, detail) => { results.push({check, status: 'PASS', detail}); console.log(`PASS  ${check}${detail ? ' — ' + detail : ''}`); };
 
-const browser = await chromium.launch();
+// Reaching the public deployment goes through this session's egress proxy, whose
+// TLS is re-terminated. Trust is pinned to that one CA's public key rather than
+// disabling certificate verification.
+const proxy = process.env.HTTPS_PROXY ? {server: process.env.HTTPS_PROXY} : undefined;
+const args = process.env.CCR_SPKI ? [`--ignore-certificate-errors-spki-list=${process.env.CCR_SPKI}`] : [];
+const browser = await chromium.launch({proxy, args});
 try {
   const ctx = await browser.newContext({viewport: {width: 1440, height: 900}});
   const p = await ctx.newPage();
@@ -22,7 +27,7 @@ try {
   await p.waitForFunction(() => VERTICAL.metrics().assetReady);
   const seeds = await p.$$eval('.seed-object', els => els.map(e => e.dataset.target));
   assert(seeds.length > 0);
-  await p.screenshot({path: out + '/static-01-rest.png'});
+  await p.screenshot({path: out + '/live-01-rest.png'});
   ok('Rest view renders', `${seeds.length} seed presences, WebGL asset ready`);
 
   // 2. Garlic search -> focus -> 29 partners across pages.
@@ -31,7 +36,7 @@ try {
   await p.waitForSelector('#semantic-layer [data-action="ingredient:garlic"]');
   await p.click('#semantic-layer [data-action="ingredient:garlic"]');
   await p.waitForFunction(() => VERTICAL.state.partners === 29 && !VERTICAL.state.loading);
-  await p.screenshot({path: out + '/static-02-garlic-partners.png'});
+  await p.screenshot({path: out + '/live-02-garlic-partners.png'});
   const pageLabel = await p.textContent('[data-action="partners-next"]');
   // Walk every partner page and collect what is actually reachable on screen.
   const seen = new Set();
@@ -50,7 +55,7 @@ try {
   const rel = await p.evaluate(() => VERTICAL.state.relation);
   assert.equal(rel.value, 100);
   assert.equal(rel.absent, false);
-  await p.screenshot({path: out + '/static-03-basil-garlic-100.png'});
+  await p.screenshot({path: out + '/live-03-basil-garlic-100.png'});
   ok('Basil + Garlic = 100', `relation_id ${rel.relationId}`);
 
   // 4. Evidence opens with exact lineage.
@@ -59,14 +64,14 @@ try {
   const lineage = await p.textContent('#evidence-lineage');
   assert(lineage.length > 100);
   const ev = await p.evaluate(() => VERTICAL.evidence());
-  await p.screenshot({path: out + '/static-04-evidence.png'});
+  await p.screenshot({path: out + '/live-04-evidence.png'});
   await p.click('#evidence-close');
   ok('Evidence opens with exact lineage', `evidence id ${ev.evidence_id || ev.relation_id}, ${lineage.length} chars of lineage`);
 
   // 5. 41 recipes over 24 + 17.
   await p.evaluate(() => VERTICAL.actions.loadRecipes());
   await p.waitForFunction(() => VERTICAL.state.recipes === 41);
-  await p.screenshot({path: out + '/static-05-recipes.png'});
+  await p.screenshot({path: out + '/live-05-recipes.png'});
   ok('Recipes using both = 41', 'collected across the recorded 24 + 17 pages');
 
   // 6. Every one of the 41 recipes opens, and its work surface loads.
@@ -86,7 +91,7 @@ try {
       () => document.querySelector('#work-frame').contentWindow?.SmileyUI?.state?.route === 'recipe',
       null, {timeout: 40000});
     worked++;
-    if (/bienville/i.test(id)) await p.screenshot({path: out + '/static-06-bienville-work.png'});
+    if (/bienville/i.test(id)) await p.screenshot({path: out + '/live-06-bienville-work.png'});
     await p.click('#work-back');
     await p.waitForFunction(() => VERTICAL.stage === 'recipe');
   }
@@ -139,7 +144,7 @@ try {
   ok('No unexpected page or console errors across the whole journey',
      `${real.length} unexpected; ${errors.length - real.length} iframe-swap aborts (also present on the live server)`);
 
-  fs.writeFileSync(out + '/STATIC-VERIFICATION.json', JSON.stringify({
+  fs.writeFileSync(out + '/' + (process.env.REPORT || 'STATIC-VERIFICATION.json'), JSON.stringify({
     status: 'PASS', base, checks: results.length, results,
     environment: 'Desktop Chromium headless, static build, no server',
     physical_iPad: 'NOT_RUN', physical_iPhone: 'NOT_RUN', VoiceOver: 'NOT_RUN',
