@@ -1,0 +1,76 @@
+{
+  "status": "PASS",
+  "base": "http://127.0.0.1:8900",
+  "checks": 13,
+  "results": [
+    {
+      "check": "Rest view renders",
+      "status": "PASS",
+      "detail": "8 seed presences, WebGL asset ready"
+    },
+    {
+      "check": "Garlic search -> 29 partners across pages",
+      "status": "PASS",
+      "detail": "4 pages, 29 distinct partners all reachable"
+    },
+    {
+      "check": "Basil + Garlic = 100",
+      "status": "PASS",
+      "detail": "relation_id gfq:rel:8bad9221c38833ad2a90122f5c0b06bf2299b89aa4354a3c13a33685b48febe6"
+    },
+    {
+      "check": "Evidence opens with exact lineage",
+      "status": "PASS",
+      "detail": "evidence id gfq:evidence:bc87936a6a2f2bfc13f1862c89bdd683663d992009e9a4cfc6e636880f0a9083, 9110 chars of lineage"
+    },
+    {
+      "check": "Recipes using both = 41",
+      "status": "PASS",
+      "detail": "collected across the recorded 24 + 17 pages"
+    },
+    {
+      "check": "All 41 recipe detail views open",
+      "status": "PASS",
+      "detail": "41/41"
+    },
+    {
+      "check": "Work surface opens for all 41 recipes",
+      "status": "PASS",
+      "detail": "41/41 reached SmileyUI route \"recipe\""
+    },
+    {
+      "check": "Bienville Stuffing reachable and opens in work mode",
+      "status": "PASS",
+      "detail": "chef-paul-prudhommes-louisiana-kitchen-p241-bienville-stuffing"
+    },
+    {
+      "check": "Unrecorded pair asserts nothing",
+      "status": "PASS",
+      "detail": "onion+thyme -> accepted:false, payload:null, no numeric"
+    },
+    {
+      "check": "Recorded absence replays real NOT_ESTABLISHED",
+      "status": "PASS",
+      "detail": "garlic+cinnamon -> numeric null (not zero), positive false"
+    },
+    {
+      "check": "Recorded unmapped pair replays real producer code",
+      "status": "PASS",
+      "detail": "garlic+chocolate -> UNMAPPED_CANONICAL_TO_SOURCE"
+    },
+    {
+      "check": "Transport correlation re-stamped per request",
+      "status": "PASS",
+      "detail": "client_request_id and generation echo the live request"
+    },
+    {
+      "check": "No unexpected page or console errors across the whole journey",
+      "status": "PASS",
+      "detail": "0 unexpected; 2 iframe-swap aborts (also present on the live server)"
+    }
+  ],
+  "environment": "Desktop Chromium headless, static build, no server",
+  "physical_iPad": "NOT_RUN",
+  "physical_iPhone": "NOT_RUN",
+  "VoiceOver": "NOT_RUN"
+}
