@@ -5,7 +5,7 @@
 // Bloom, ordered dither, ACES. No data, no UI beyond tuning. Judged on the iPad.
 import * as THREE from 'three';
 
-const P = { mist: 0.55, mistScale: 0.02, grain: 0.7, absorb: 0.9, lightI: 14, falloff: 0.0012, g1: 0.6, g2: -0.3, gmix: 0.5, plate: 1.0, fog: 0.0035, bloom: 0.55, threshold: 0.7, exposure: 1.05, steps: 48, drift: 1, scale2: 0.5 };
+const P = { mist: 0.16, mistScale: 0.02, grain: 0.7, absorb: 0.7, lightI: 18, falloff: 0.0012, g1: 0.6, g2: -0.3, gmix: 0.5, plate: 1.3, fog: 0.003, bloom: 0.55, threshold: 0.7, exposure: 1.05, steps: 48, drift: 1, scale2: 0.5 };
 const hp = new URLSearchParams(location.hash.slice(1)); for (const k of Object.keys(P)) if (hp.has(k)) P[k] = Number(hp.get(k));
 const writeHash = () => history.replaceState(null, '', '#' + Object.entries(P).filter(([k]) => k !== 'scale2').map(([k, v]) => k + '=' + (+v.toFixed(4))).join('&'));
 const status = document.getElementById('status'); status.textContent = 'Opening the clouds…';
@@ -103,7 +103,7 @@ float grain(vec3 p){ vec3 n = vec3(0.5); // triplanar sample of the authored til
 float mist(vec3 p){
   vec3 q = p * uMistScale + vec3(0.02, 0.01, 0.015) * uTime * uDrift;
   float base = texture(uNoise, q).r; float clump = texture(uNoise, q * 0.31 + vec3(0.4)).b;
-  float d = smoothstep(0.30, 0.75, base * 0.6 + clump * 0.5);
+  float d = smoothstep(0.58, 0.90, base * 0.6 + clump * 0.5);          // mostly clear; wisps where the noise peaks
   d *= mix(1.0, grain(p) * 1.6, uGrainK);
   return d * uMist;
 }
@@ -139,12 +139,13 @@ void main(){
   outColor = vec4(col, T);
 }`;
 const COMPOSE = /* glsl */`
-precision highp float; in vec2 vUv; out vec4 outColor; uniform sampler2D uScene, uVol, uBloom; uniform vec3 uFog; uniform float uExposure, uBloomK;
+precision highp float; in vec2 vUv; out vec4 outColor; uniform sampler2D uScene, uVol, uBloom, uDepthDbg; uniform vec3 uFog; uniform float uExposure, uBloomK; uniform int uDebug;
 vec3 aces(vec3 x){ return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14), 0.0, 1.0); }
 void main(){
   vec4 s = texture(uScene, vUv); vec4 v = texture(uVol, vUv);
   vec3 back = mix(uFog * 0.5, s.rgb, s.a);                            // plates over the deep fog colour
   vec3 c = back * v.a + v.rgb + texture(uBloom, vUv).rgb * uBloomK;
+  if (uDebug == 1) c = back; else if (uDebug == 2) c = v.rgb + vec3(v.a) * 0.15; else if (uDebug == 3) { float z = texture(uDepthDbg, vUv).r; c = vec3(z >= 0.9999 ? 0.0 : 1.0 - pow(z, 40.0)); }
   c *= uExposure; c = aces(c);
   float vg = smoothstep(1.55, 0.4, length(vUv - 0.5)); c *= 0.84 + 0.16 * vg;
   outColor = vec4(pow(c, vec3(1.0/2.2)), 1.0);
@@ -172,7 +173,7 @@ const mistMat = new THREE.ShaderMaterial({glslVersion: THREE.GLSL3, vertexShader
   uNoise: {value: noise}, uGrain: {value: grain}, uDepth: {value: null}, uTime: {value: 0}, uNear: {value: cam.near}, uFar: {value: cam.far}, uTanHalfFov: {value: Math.tan(THREE.MathUtils.degToRad(cam.fov / 2))}, uAspect: {value: 1},
   uCamPos: {value: new THREE.Vector3()}, uCamFwd: {value: new THREE.Vector3()}, uCamRight: {value: new THREE.Vector3()}, uCamUp: {value: new THREE.Vector3()}, uFog: {value: FOG}, uLights: {value: LIGHTS},
   uMist: {value: P.mist}, uMistScale: {value: P.mistScale}, uGrainK: {value: P.grain}, uAbsorb: {value: P.absorb}, uLightI: {value: P.lightI}, uFalloff: {value: P.falloff}, uG1: {value: P.g1}, uG2: {value: P.g2}, uGmix: {value: P.gmix}, uDrift: {value: P.drift}, uSteps: {value: P.steps}}});
-const composeMat = new THREE.ShaderMaterial({glslVersion: THREE.GLSL3, vertexShader: VERT, fragmentShader: COMPOSE, depthTest: false, depthWrite: false, uniforms: {uScene: {value: null}, uVol: {value: null}, uBloom: {value: null}, uFog: {value: FOG}, uExposure: {value: P.exposure}, uBloomK: {value: P.bloom}}});
+const composeMat = new THREE.ShaderMaterial({glslVersion: THREE.GLSL3, vertexShader: VERT, fragmentShader: COMPOSE, depthTest: false, depthWrite: false, uniforms: {uScene: {value: null}, uVol: {value: null}, uBloom: {value: null}, uDepthDbg: {value: null}, uFog: {value: FOG}, uExposure: {value: P.exposure}, uBloomK: {value: P.bloom}, uDebug: {value: Number(hp.get('debug') || 0)}}});
 const brightMat = new THREE.ShaderMaterial({glslVersion: THREE.GLSL3, vertexShader: VERT, fragmentShader: BRIGHT, depthTest: false, depthWrite: false, uniforms: {uScene: {value: null}, uVol: {value: null}, uThr: {value: P.threshold}, uFog: {value: FOG}}});
 const blurMat = new THREE.ShaderMaterial({glslVersion: THREE.GLSL3, vertexShader: VERT, fragmentShader: BLUR, depthTest: false, depthWrite: false, uniforms: {uTex: {value: null}, uDir: {value: new THREE.Vector2()}}});
 const pass = mat => { const s = new THREE.Scene(); s.add(new THREE.Mesh(quad, mat)); return s; };
@@ -223,7 +224,7 @@ function loop() {
   brightMat.uniforms.uScene.value = rtScene.texture; brightMat.uniforms.uVol.value = rtVol.texture; renderer.setRenderTarget(rtBright); renderer.render(brightScene, ortho);
   blurMat.uniforms.uTex.value = rtBright.texture; blurMat.uniforms.uDir.value.set(1 / rtBright.width, 0); renderer.setRenderTarget(rtBlurA); renderer.render(blurScene, ortho);
   blurMat.uniforms.uTex.value = rtBlurA.texture; blurMat.uniforms.uDir.value.set(0, 1 / rtBright.height); renderer.setRenderTarget(rtBlurB); renderer.render(blurScene, ortho);
-  composeMat.uniforms.uScene.value = rtScene.texture; composeMat.uniforms.uVol.value = rtVol.texture; composeMat.uniforms.uBloom.value = rtBlurB.texture; renderer.setRenderTarget(null); renderer.render(composeScene, ortho);
+  composeMat.uniforms.uScene.value = rtScene.texture; composeMat.uniforms.uVol.value = rtVol.texture; composeMat.uniforms.uBloom.value = rtBlurB.texture; composeMat.uniforms.uDepthDbg.value = rtScene.depthTexture; renderer.setRenderTarget(null); renderer.render(composeScene, ortho);
   acc += dt; frames++;
   if (acc >= 1) { fps = Math.round(frames / acc); frames = 0; acc = 0;
     if (fps < 26 && P.scale2 > 0.3) { P.scale2 = Math.max(0.3, P.scale2 - 0.08); makeTargets(); } else if (fps > 52 && P.scale2 < 0.75) { P.scale2 = Math.min(0.75, P.scale2 + 0.05); makeTargets(); }
