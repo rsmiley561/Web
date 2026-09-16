@@ -5,7 +5,7 @@
 // Bloom, ordered dither, ACES. No data, no UI beyond tuning. Judged on the iPad.
 import * as THREE from 'three';
 
-const P = { mist: 0.16, mistScale: 0.02, grain: 0.7, absorb: 0.7, lightI: 18, falloff: 0.0012, g1: 0.6, g2: -0.3, gmix: 0.5, plate: 1.3, fog: 0.003, bloom: 0.55, threshold: 0.7, exposure: 1.05, steps: 48, drift: 1, scale2: 0.5 };
+const P = { mist: 0.09, mistScale: 0.02, grain: 0.7, absorb: 0.7, lightI: 18, falloff: 0.0012, g1: 0.6, g2: -0.3, gmix: 0.5, plate: 1.5, fog: 0.0025, bloom: 0.7, threshold: 0.65, exposure: 0.95, steps: 48, drift: 1, scale2: 0.5 };
 const hp = new URLSearchParams(location.hash.slice(1)); for (const k of Object.keys(P)) if (hp.has(k)) P[k] = Number(hp.get(k));
 const writeHash = () => history.replaceState(null, '', '#' + Object.entries(P).filter(([k]) => k !== 'scale2').map(([k, v]) => k + '=' + (+v.toFixed(4))).join('&'));
 const status = document.getElementById('status'); status.textContent = 'Opening the clouds…';
@@ -121,7 +121,7 @@ void main(){
     vec3 p = uCamPos + rd * t;
     float d = mist(p);
     if (d > 0.003) {
-      vec3 S = uFog * 0.55 * d;
+      vec3 S = uFog * 0.35 * d;
       for (int k = 0; k < 3; k++) {
         vec3 L = uLights[k] - p; float dl = length(L); L /= dl;
         float sh = mist(p + L * 4.0) + mist(p + L * 10.0);
@@ -135,7 +135,7 @@ void main(){
     t += dt;
   }
   // the lights themselves, seen through whatever mist remains, only if not behind a plate
-  for (int k = 0; k < 3; k++) { vec3 toL = uLights[k] - uCamPos; float dl = length(toL); if (dl < tHit) { float a = max(dot(rd, toL / dl), 0.0); col += T * vec3(1.0, 0.93, 0.78) * pow(a, 900.0) * uLightI * 0.35; } }
+  for (int k = 0; k < 3; k++) { vec3 toL = uLights[k] - uCamPos; float dl = length(toL); if (dl < tHit) { float a = max(dot(rd, toL / dl), 0.0); col += T * vec3(1.0, 0.93, 0.78) * (pow(a, 900.0) * 0.12 + pow(a, 60.0) * 0.03) * uLightI; } }
   outColor = vec4(col, T);
 }`;
 const COMPOSE = /* glsl */`
