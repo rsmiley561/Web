@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1"><meta name="theme-color" content="#030907">
+<title>Smiley / The Medium</title><link rel="icon" href="data:,">
+<script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js"}}</script>
+<style>
+:root{--ink:#e8efe9;--muted:#9fb3a6;--glass:rgba(6,18,14,.6);--line:rgba(190,230,205,.22)}
+*{box-sizing:border-box}html,body{height:100%;margin:0;background:#030907;color:var(--ink);font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;overflow:hidden;overscroll-behavior:none}
+#stage{position:fixed;inset:0;touch-action:none}#stage canvas{display:block}
+.top{position:fixed;left:0;right:0;top:0;padding:max(12px,env(safe-area-inset-top)) 4% 10px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:5;pointer-events:none}.top>*{pointer-events:auto}
+.brand{font-weight:700;font-size:1.3rem;letter-spacing:-.02em}.brand span{display:block;font-size:.55rem;letter-spacing:.34em;color:var(--muted);font-weight:400;margin-top:3px}
+#status{font-style:italic;color:var(--muted);font-family:Georgia,serif}
+.glass{appearance:none;font:inherit;color:var(--ink);background:var(--glass);border:1px solid var(--line);border-radius:999px;padding:9px 14px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer}
+.bottom{position:fixed;left:50%;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;gap:8px;z-index:5;align-items:center}
+.hint{color:var(--muted);font-size:.72rem}
+#tune{position:fixed;right:3%;top:76px;bottom:80px;width:min(340px,92vw);overflow:auto;z-index:6;background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:14px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:none;grid-auto-rows:min-content;gap:6px}
+#tune.open{display:grid}#tune label{display:grid;grid-template-columns:78px 1fr 52px;align-items:center;gap:8px;font-size:.78rem;color:var(--muted)}#tune output{text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
+#tune input{width:100%;accent-color:#c9d9c0}#tune button{margin-top:6px;appearance:none;font:inherit;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px}
+@media(max-width:700px){.hint{display:none}.brand span{display:none}}
+</style></head>
+<body>
+<div id="stage"></div>
+<header class="top"><div class="brand">smiley<span>THE MEDIUM · AUTHORED CLOUDS</span></div><span id="status" role="status">Opening…</span><button class="glass" id="tune-toggle">Tune</button></header>
+<section id="tune" aria-label="Tuning"></section>
+<div class="bottom"><span class="hint">Drag to look · Pinch or scroll to move · Left alone, it glides down the corridor</span><button class="glass" id="pause">Pause</button></div>
+<script type="module" src="medium2.js"></script>
+</body></html>
